@@ -1,5 +1,6 @@
 const accountRoutes = require('./account');
 const locationRoutes = require('./location');
+const weatherRoutes = require('./weather');
 
 const constructorMethod = (app) => {
   app.use('/account', accountRoutes);
