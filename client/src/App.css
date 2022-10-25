@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 .App-logo {
@@ -35,4 +36,51 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.title {
+  position: absolute;
+  z-index: 100;
+  top: 5px;
+  left: 25px;
+  color: white;
+  font-size: x-large;
+  font-weight: 900;
+}
+
+.sidebar {
+  height: 100vh;
+}
+
+.menu {
+  padding-top: 60px;
+}
+
+.menuItem, .subMenu, .subMenuItem {
+  color: white;
+  text-align: left;
+}
+
+.subMenuItem {
+  background-color: #333333;
+}
+
+.menu-anchor:hover {
+  color: #1E1E1E;
+  font-weight: 600;
+}
+
+.App-body {
+  position: absolute;
+  top: 0;
+  left: 250px;
+  width: calc(100% - 350px);;
+  height: calc(100% - 100px);;
+  text-align: left;
+  padding: 50px;
+}
+
+h2 {
+  font-size: xxx-large;
+  margin-top: 0;
 }
