@@ -3,6 +3,14 @@ function checkString(string) {
     return string.trim();
 }
 
+function checkNumber(num) {
+    if (typeof num === 'string') num = checkString(num);
+    num = Number(num);
+    if (isNaN(num)) throw 'You must provide a valid number';
+    return num;
+}
+
 module.exports = {
-    checkString
+    checkString,
+    checkNumber
 }
