@@ -67,10 +67,20 @@ async function getWeatherAlerts(lat, lon) {
   return data;
 }
 
+async function getHistoricalWeather(lat, lon, dt) {
+  lat = validation.checkNumber(lat);
+  lon = validation.checkNumber(lon);
+  dt = validation.checkTimestamp(dt);
+
+  let { data } = await axios.get(`${apiEndpoint}/timemachine?lat=${lat}&lon=${lon}&dt=${dt}&appid=${apiKey}`);
+  return data;
+}
+
 module.exports = {
   getCurrentWeather,
   getMinutelyWeather,
   getHourlyWeather,
   getDailyWeather,
-  getWeatherAlerts
+  getWeatherAlerts,
+  getHistoricalWeather
 }

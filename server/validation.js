@@ -10,7 +10,14 @@ function checkNumber(num) {
     return num;
 }
 
+function checkTimestamp(dt) {
+    dt = checkNumber(dt);
+    if (!Number.isInteger(dt) || dt < 0) throw 'You must provide a non-negative integer';
+    return dt;
+}
+
 module.exports = {
     checkString,
-    checkNumber
+    checkNumber,
+    checkTimestamp
 }
