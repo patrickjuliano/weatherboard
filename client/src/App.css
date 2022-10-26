@@ -84,3 +84,12 @@ h2 {
   font-size: xxx-large;
   margin-top: 0;
 }
+
+.selectLabel, .selectLocation {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.selectLabel {
+  margin-right: 10px;
+}
