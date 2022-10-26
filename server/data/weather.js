@@ -17,8 +17,7 @@ async function makeRequest(lat, lon, req) {
   requests.splice(requestIndex, 1);
   const excludeRequests = requests.join();
 
-  console.log(`${apiEndpoint}?lat=${lat}&lon=${lon}&exclude=${excludeRequests}&appid=${apiKey}`);
-  let { data } = await axios.get(`${apiEndpoint}?lat=${lat}&lon=${lon}&exclude=${excludeRequests}&appid=${apiKey}`);
+  let { data } = await axios.get(`${apiEndpoint}/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=${excludeRequests}&appid=${apiKey}`);
   return data;
 }
 
@@ -72,7 +71,7 @@ async function getHistoricalWeather(lat, lon, dt) {
   lon = validation.checkNumber(lon);
   dt = validation.checkTimestamp(dt);
 
-  let { data } = await axios.get(`${apiEndpoint}/timemachine?lat=${lat}&lon=${lon}&dt=${dt}&appid=${apiKey}`);
+  let { data } = await axios.get(`${apiEndpoint}/data/3.0/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${dt}&appid=${apiKey}`);
   return data;
 }
 

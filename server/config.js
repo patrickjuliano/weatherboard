@@ -4,5 +4,5 @@ dotenv.config();
 module.exports = {
   port: process.env.PORT,
   apiKey: process.env.API_KEY,
-  apiEndpoint: 'https://api.openweathermap.org/data/3.0/onecall'
+  apiEndpoint: 'https://api.openweathermap.org'
 };
