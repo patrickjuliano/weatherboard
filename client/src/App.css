@@ -48,6 +48,10 @@
   font-weight: 900;
 }
 
+header {
+  position: fixed;
+}
+
 .sidebar {
   height: 100vh;
 }

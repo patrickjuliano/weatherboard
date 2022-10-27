@@ -26,8 +26,8 @@ async function getCurrentWeather(lat, lon) {
   lat = validation.checkNumber(lat);
   lon = validation.checkNumber(lon);
 
-  let data = await makeRequest(lat, lon, 'current');
-  return data;
+  let { current } = await makeRequest(lat, lon, 'current');
+  return current;
 }
 
 // Gets the minute forecast for 1 hour
@@ -35,8 +35,8 @@ async function getMinutelyWeather(lat, lon) {
   lat = validation.checkNumber(lat);
   lon = validation.checkNumber(lon);
 
-  let data = await makeRequest(lat, lon, 'minutely');
-  return data;
+  let { minutely } = await makeRequest(lat, lon, 'minutely');
+  return minutely;
 }
 
 // Gets the hourly forecast for 48 hours
@@ -44,8 +44,8 @@ async function getHourlyWeather(lat, lon) {
   lat = validation.checkNumber(lat);
   lon = validation.checkNumber(lon);
 
-  let data = await makeRequest(lat, lon, 'hourly');
-  return data;
+  let { hourly } = await makeRequest(lat, lon, 'hourly');
+  return hourly;
 }
 
 // Gets the daily forecast for 8 days
@@ -53,8 +53,8 @@ async function getDailyWeather(lat, lon) {
   lat = validation.checkNumber(lat);
   lon = validation.checkNumber(lon);
 
-  let data = await makeRequest(lat, lon, 'daily');
-  return data;
+  let { daily } = await makeRequest(lat, lon, 'daily');
+  return daily;
 }
 
 // Gets national weather alerts
