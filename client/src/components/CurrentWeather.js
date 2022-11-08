@@ -96,7 +96,7 @@ const CurrentWeather = (props) => {
 				{
 					hourlyWeatherData &&
 						<IconContext.Provider value={{size: 50}}>
-							<List subheader={<ListSubheader>Hourly Forecast</ListSubheader>} sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+							<List subheader={<ListSubheader>Hourly Forecast</ListSubheader>} sx={{ width: '100%', maxWidth: 300, bgcolor: 'background.paper' }}>
 								{hourlyWeatherData.slice(0, 25).map((data, index) => (
 									<div>
 										<ListItemButton divider onClick={() => handleClick(index)}>
@@ -110,63 +110,117 @@ const CurrentWeather = (props) => {
 											<IconContext.Provider value={{className: 'nestedListIcon', color: '#757575', size: 30}}>
 												<List component='div'>
 													{'feels_like' in data &&
-														<ListItem sx={{ pl: 5 }}>
-															<WiThermometer />
-															<ListItemText primary={`Feels Like: ${data.feels_like} ºF`} />
-														</ListItem>
+														<Tooltip title='Temperature accounting for the human perception of weather' placement='right' arrow >
+															<ListItemButton sx={{ pl: 5 }}>
+																<WiThermometer />
+																<ListItemText primary={`Feels Like: ${data.feels_like} ºF`} />
+															</ListItemButton>
+														</Tooltip>
 													}
-													{'pressure' in data && <ListItem sx={{ pl: 5 }}>
-														<WiBarometer />
-														<ListItemText primary={`Pressure: ${data.pressure} hPa`} />
-													</ListItem>}
-													{'humidity' in data && <ListItem sx={{ pl: 5 }}>
-														<WiHumidity />
-														<ListItemText primary={`Humidity: ${data.humidity}%`} />
-													</ListItem>}
-													{'dew_point' in data && <ListItem sx={{ pl: 5 }}>
-														<WiRaindrop />
-														<ListItemText primary={`Dew Point: ${data.dew_point} ºF`} />
-													</ListItem>}
-													{'uvi' in data && <ListItem sx={{ pl: 5 }}>
-														<WiDaySunny />
-														<ListItemText primary={`UV Index: ${data.uvi}`} />
-													</ListItem>}
-													{'clouds' in data && <ListItem sx={{ pl: 5 }}>
-														<WiCloud />
-														<ListItemText primary={`Cloudiness: ${data.clouds}%`} />
-													</ListItem>}
-													{'visibility' in data && <ListItem sx={{ pl: 5 }}>
-														<WiDust />
-														<ListItemText primary={`Visibility: ${data.visibility} m`} />
-													</ListItem>}
-													{'wind_speed' in data && <ListItem sx={{ pl: 5 }}>
-														<WiWindy />
-														<ListItemText primary={`Wind Speed: ${data.wind_speed} mph`} />
-													</ListItem>}
-													{'wind_gust' in data && <ListItem sx={{ pl: 5 }}>
-														<WiCloudyGusts />
-														<ListItemText primary={`Wind Gust: ${data.wind_gust} mph`} />
-													</ListItem>}
-													{'wind_deg' in data && <ListItem sx={{ pl: 5 }}>
-														<WiWindDeg />
-														<ListItemText primary={`Wind Direction: ${data.wind_deg}º`} />
-													</ListItem>}
-													{'pop' in data && <ListItem sx={{ pl: 5 }}>
-														<WiSprinkle />
-														<ListItemText primary={`Precipiation: ${data.pop * 10}%`} />
-													</ListItem>}
-													{'rain' in data && '1h' in data.rain && <ListItem sx={{ pl: 5 }}>
-														<WiRain />
-														<ListItemText primary={`Rain: ${data.rain['1h']} mm`} />
-													</ListItem>}
-													{'snow' in data && '1h' in data.snow && <ListItem sx={{ pl: 5 }}>
-														<WiSnow />
-														<ListItemText primary={`Snow: ${data.snow['1h']} mm`} />
-													</ListItem>}
-													{'weather' in data && 'main' in data.weather && <ListItem sx={{ pl: 5 }}>
-														<WiStormWarning />
-														<ListItemText primary={`Weather: ${data.weather.main}`} />
-													</ListItem>}
+													{'pressure' in data && 
+														<Tooltip title='Atmospheric pressure on the sea level' placement='right' arrow >
+															<ListItemButton sx={{ pl: 5 }}>
+																<WiBarometer />
+																<ListItemText primary={`Pressure: ${data.pressure} hPa`} />
+															</ListItemButton>
+														</Tooltip>
+													}
+													{'humidity' in data && 
+														<Tooltip title='Amount of water vapor in the air' placement='right' arrow >
+															<ListItemButton sx={{ pl: 5 }}>
+																<WiHumidity />
+																<ListItemText primary={`Humidity: ${data.humidity}%`} />
+															</ListItemButton>
+														</Tooltip>
+													}
+													{'dew_point' in data && 
+														<Tooltip title='Atmospheric temperature (varying according to pressure and humidity) below which water droplets begin to condense and dew can form' placement='right' arrow >
+															<ListItemButton sx={{ pl: 5 }}>
+																<WiRaindrop />
+																<ListItemText primary={`Dew Point: ${data.dew_point} ºF`} />
+															</ListItemButton>
+														</Tooltip>
+													}
+													{'uvi' in data && 
+														<Tooltip title='Strength of ultraviolet radiation' placement='right' arrow >
+															<ListItemButton sx={{ pl: 5 }}>
+																<WiDaySunny />
+																<ListItemText primary={`UV Index: ${data.uvi}`} />
+															</ListItemButton>
+														</Tooltip>
+													}
+													{'clouds' in data && 
+														<Tooltip title='Measure of cloudiness' placement='right' arrow >
+															<ListItemButton sx={{ pl: 5 }}>
+																<WiCloud />
+																<ListItemText primary={`Clouds: ${data.clouds}%`} />
+															</ListItemButton>
+														</Tooltip>
+													}
+													{'visibility' in data && 
+														<Tooltip title='Average visibility (capped at 10 km)' placement='right' arrow >
+															<ListItemButton sx={{ pl: 5 }}>
+																<WiDust />
+																<ListItemText primary={`Visibility: ${data.visibility} m`} />
+															</ListItemButton>
+														</Tooltip>
+													}
+													{'wind_speed' in data && 
+														<Tooltip title='Speed at which wind travels' placement='right' arrow >
+															<ListItemButton sx={{ pl: 5 }}>
+																<WiWindy />
+																<ListItemText primary={`Wind Speed: ${data.wind_speed} mph`} />
+															</ListItemButton>
+														</Tooltip>
+													}
+													{'wind_gust' in data && 
+														<Tooltip title='Peak wind speed' placement='right' arrow >
+															<ListItemButton sx={{ pl: 5 }}>
+																<WiCloudyGusts />
+																<ListItemText primary={`Wind Gust: ${data.wind_gust} mph`} />
+															</ListItemButton>
+														</Tooltip>
+													}
+													{'wind_deg' in data && 
+														<Tooltip title='Direction from which wind travels' placement='right' arrow >
+															<ListItemButton sx={{ pl: 5 }}>
+																<WiWindDeg />
+																<ListItemText primary={`Wind Direction: ${data.wind_deg}º`} />
+															</ListItemButton>
+														</Tooltip>
+													}
+													{'pop' in data && 
+														<Tooltip title='Probability of precipitation' placement='right' arrow >
+															<ListItemButton sx={{ pl: 5 }}>
+																<WiSprinkle />
+																<ListItemText primary={`Precipiation: ${data.pop * 10}%`} />
+															</ListItemButton>
+														</Tooltip>
+													}
+													{'rain' in data && '1h' in data.rain && 
+														<Tooltip title='Rain volume' placement='right' arrow >
+															<ListItemButton sx={{ pl: 5 }}>
+																<WiRain />
+																<ListItemText primary={`Rain: ${data.rain['1h']} mm`} />
+															</ListItemButton>
+														</Tooltip>
+													}
+													{'snow' in data && '1h' in data.snow && 
+														<Tooltip title='Snow volume' placement='right' arrow >
+															<ListItemButton sx={{ pl: 5 }}>
+																<WiSnow />
+																<ListItemText primary={`Snow: ${data.snow['1h']} mm`} />
+															</ListItemButton>
+														</Tooltip>
+													}
+													{'weather' in data && 'main' in data.weather && 
+														<Tooltip title='Weather condition' placement='right' arrow >
+															<ListItemButton sx={{ pl: 5 }}>
+																<WiStormWarning />
+																<ListItemText primary={`Weather: ${data.weather.main}`} />
+															</ListItemButton>
+														</Tooltip>
+													}
 												</List>
 											</IconContext.Provider>
 										</Collapse>
