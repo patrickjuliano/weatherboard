@@ -380,7 +380,7 @@ const CurrentWeather = (props) => {
 											<ListItemIcon>
 												{getWeatherIcon(data.weather[0].icon)}
 											</ListItemIcon>
-											<ListItemText primary={Math.round(data.temp) + ' ºF'} secondary={data.dt === current ? 'Now' : (new Date(data.dt * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true })} />
+											<ListItemText primary={tabIndex === 0 ? Math.round(data.temp) + ' ºF' : `${Math.round(data.temp.min)}ºF-${Math.round(data.temp.max)}ºF`} secondary={data.dt === current ? 'Now' : (new Date(data.dt * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true })} />
 											{open[index] ? <ExpandLess /> : <ExpandMore />}
 										</ListItemButton>
 										<Collapse in={open[index]} timeout='auto' unmountOnExit>
