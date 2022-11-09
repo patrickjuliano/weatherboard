@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import '../App.css';
 import axios from 'axios';
-import { Autocomplete, Collapse, Divider, List, ListItem, ListItemButton, ListItemText, ListItemIcon, ListSubheader, TextField, Icon, Tooltip } from '@mui/material';
+import { Autocomplete, Collapse, Divider, List, ListItem, ListItemButton, ListItemText, ListItemIcon, ListSubheader, TextField, Icon, Tooltip, Tabs, Tab } from '@mui/material';
 import { WiDaySunny, WiDaySunnyOvercast, WiNightClear, WiNightAltPartlyCloudy, WiCloud, WiCloudy, WiShowers, WiRain, WiThunderstorm, WiSnowflakeCold, WiDust, WiBarometer, WiThermometer, WiHumidity, WiStrongWind, WiCloudyGusts, WiDirectionRight, WiRaindrop, WiWindy, WiWindDeg, WiSprinkle, WiSnow, WiStormWarning } from 'react-icons/wi';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { IconContext } from 'react-icons';
 import { checkNumber } from '../validation';
+import { Box } from '@mui/system';
 
 const weatherIcons = {
 	'01': {
@@ -37,8 +38,9 @@ const CurrentWeather = (props) => {
 	const [ currentWeatherData, setCurrentWeatherData ] = useState(null);
 	const [ hourlyWeatherData, setHourlyWeatherData ] = useState(null);
 	const [ dailyWeatherData, setDailyWeatherData ] = useState(null);
+	const [ tabIndex, setTabIndex ] = useState(null);
 	const [ open, setOpen ] = useState(Array(25).fill(false));
-	const [ loading, setLoading ] = useState(true);
+	const [ loading, setLoading ] = useState(false);
 	const [ error, setError ] = useState(false);
 
 	const handleClick = (index) => {
@@ -50,13 +52,19 @@ const CurrentWeather = (props) => {
 
 	useEffect(() => {
 		async function fetchData() {
-			try {
-				if (location === null) {
-					setCurrentWeatherData(null);
-					setHourlyWeatherData(null);
-				} else {
-					setLoading(true);
-					
+			let currentTabIndex = tabIndex;
+			if (location === null) {
+				currentTabIndex = null;
+				setTabIndex(currentTabIndex);
+			} else {
+				setLoading(true);
+
+				if (tabIndex === null) {
+					currentTabIndex = 0;
+					setTabIndex(currentTabIndex);
+				}
+
+				try {
 					location.coordinates.lat = checkNumber(location.coordinates.lat);
 					location.coordinates.lon = checkNumber(location.coordinates.lon);
 
@@ -65,15 +73,20 @@ const CurrentWeather = (props) => {
 
 					const { data: hourlyWeather } = await axios.get(`http://localhost:4000/weather/hourly?lat=${location.coordinates.lat}&lon=${location.coordinates.lon}`);
 					setHourlyWeatherData(hourlyWeather);
+				} catch (e) {
+					alert(e);
 				}
+
 				setLoading(false);
-			} catch (e) {
-				alert(e);
-				console.log(e);
 			}
 		}
 		fetchData();
 	}, [ location ]);
+
+	// Set tabIndex to value selected from Tabs component
+	function selectTab(_, value) {
+		setTabIndex(value);
+	}
 
 	// Set location to value selected from Autocomplete component
 	function onInputChange(_, value) {
@@ -94,7 +107,7 @@ const CurrentWeather = (props) => {
 		var content =
 			<div>
 				{
-					hourlyWeatherData &&
+					tabIndex === 0 && hourlyWeatherData &&
 						<IconContext.Provider value={{size: 50}}>
 							<List subheader={<ListSubheader>Hourly Forecast</ListSubheader>} sx={{ width: '100%', maxWidth: 300, bgcolor: 'background.paper' }}>
 								{hourlyWeatherData.slice(0, 25).map((data, index) => (
@@ -107,7 +120,7 @@ const CurrentWeather = (props) => {
 											{open[index] ? <ExpandLess /> : <ExpandMore />}
 										</ListItemButton>
 										<Collapse in={open[index]} timeout='auto' unmountOnExit>
-											<IconContext.Provider value={{className: 'nestedListIcon', color: '#757575', size: 30}}>
+											<IconContext.Provider value={{className: 'nestedListIcon', size: 30 }}>
 												<List component='div'>
 													{'feels_like' in data &&
 														<Tooltip title='Temperature accounting for the human perception of weather' placement='right' arrow >
@@ -230,7 +243,7 @@ const CurrentWeather = (props) => {
 						</IconContext.Provider>
 				}
 				{
-					dailyWeatherData &&
+					tabIndex === 1 && dailyWeatherData &&
 						<p>TODO: DAILY WEATHER</p>
 				}
 			</div>
@@ -242,6 +255,12 @@ const CurrentWeather = (props) => {
 			<div>
 				<p className='selectLabel'>Select a location:</p>
 				<Autocomplete className='selectLocation' defaultValue={location} onChange={onInputChange} options={savedLocations} renderInput={(params) => <TextField {...params} label='Location' />} sx={{width: 300}} filterOptions={(x) => x} />
+				<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+					<Tabs value={tabIndex} onChange={selectTab}>
+						<Tab label="Hourly Forecast" disabled={!location} />
+						<Tab label="Daily Forecast" disabled={!location} />
+					</Tabs>
+				</Box>
 			</div>
 			{content}
 		</div>
