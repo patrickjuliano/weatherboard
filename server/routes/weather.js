@@ -4,6 +4,7 @@ const data = require('../data');
 const weatherData = data.weather;
 const validation = require('../validation');
 
+
 // Requires numerical values for the query parameters lat and lon
 router.get('/current', async (req, res) => {
     try {

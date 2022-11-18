@@ -17,6 +17,7 @@ async function makeRequest(lat, lon, req) {
   requests.splice(requestIndex, 1);
   const excludeRequests = requests.join();
 
+  console.log(`${apiEndpoint}/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=${excludeRequests}&units=imperial&appid=${apiKey}`)
   let { data } = await axios.get(`${apiEndpoint}/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=${excludeRequests}&units=imperial&appid=${apiKey}`);
   return data;
 }
@@ -52,7 +53,7 @@ async function getHourlyWeather(lat, lon) {
 async function getDailyWeather(lat, lon) {
   lat = validation.checkNumber(lat);
   lon = validation.checkNumber(lon);
-
+ 
   let { daily } = await makeRequest(lat, lon, 'daily');
   return daily;
 }

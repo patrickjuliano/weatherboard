@@ -5,5 +5,5 @@ const weatherData = require('./weather');
 module.exports = {
   account: accountData,
   location: locationData,
-  weather: weatherData
+  weather: weatherData,
 };
