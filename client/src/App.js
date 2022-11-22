@@ -13,6 +13,17 @@ import Locations from './components/Locations';
 import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
 import Error from './components/Error';
+import { AppBar, Box, CssBaseline, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Tab, Tabs, Toolbar, Typography } from '@mui/material';
+
+// const sidebarWidth = 200;
+// const sidebarTabs = [
+//   { route: '/', text: 'Home', icon: <RiHome2Fill /> },
+//   { route: '/weather/current', text: 'Weather', icon: <RiShowersFill /> },
+//   { route: '/locations', text: 'Locations', icon: <RiMapPin2Fill /> },
+//   { route: '/', text: 'Settings', icon: <RiSettings3Fill /> },
+//   { route: '/login', text: 'Log In', icon: <RiLoginBoxFill /> },
+//   { route: '/signup', text: 'Sign Up', icon: <RiAddBoxFill /> }
+// ];
 
 function App() {
   return (
@@ -51,7 +62,7 @@ function App() {
 						<Route path='/locations' element={<Locations />} />
 
 						<Route path='/login' element={<LogIn />} />
-						<Route path='/signup' element={<SignUp />} />
+						<Route path='/signup' element={<SignUp />} /> 
 
             <Route path='/error' element={<Error />} />
             <Route path='*' element={<Navigate to={'/error'} replace />} />

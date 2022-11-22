@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import '../App.css';
 import axios from 'axios';
 import { Autocomplete, Collapse, Divider, List, ListItem, ListItemButton, ListItemText, ListItemIcon, ListSubheader, TextField, Icon, Tooltip, Tabs, Tab } from '@mui/material';
-import { WiDaySunny, WiDaySunnyOvercast, WiNightClear, WiNightAltPartlyCloudy, WiCloud, WiCloudy, WiShowers, WiRain, WiThunderstorm, WiSnowflakeCold, WiDust, WiBarometer, WiThermometer, WiHumidity, WiStrongWind, WiCloudyGusts, WiDirectionRight, WiRaindrop, WiWindy, WiWindDeg, WiSprinkle, WiSnow, WiStormWarning, WiSunrise, WiSunset, WiMoonrise, WiMoonset, WiMoonFull, WiMoonNew, WiMoonWaningCrescent1, WiMoonFirstQuarter, WiMoonWaxingGibbous1, WiMoonWaningGibbous1, WiMoonThirdQuarter, WiMoonWaxingCrescent1 } from 'react-icons/wi';
+import { WiDaySunny, WiDaySunnyOvercast, WiNightClear, WiNightAltPartlyCloudy, WiCloud, WiCloudy, WiShowers, WiRain, WiThunderstorm, WiSnowflakeCold, WiDust, WiBarometer, WiThermometer, WiHumidity, WiStrongWind, WiCloudyGusts, WiDirectionRight, WiRaindrop, WiWindy, WiWindDeg, WiSprinkle, WiSnow, WiStormWarning, WiSunrise, WiSunset, WiMoonrise, WiMoonset, WiMoonFull, WiMoonNew, WiMoonWaningCrescent1, WiMoonFirstQuarter, WiMoonWaxingGibbous1, WiMoonWaningGibbous1, WiMoonThirdQuarter, WiMoonWaxingCrescent1, WiMoonAltWaxingCrescent1, WiMoonAltWaxingGibbous1, WiMoonAltWaningGibbous1, WiMoonAltWaningCrescent1, WiMoonAltThirdQuarter, WiMoonAltFull, WiMoonAltFirstQuarter, WiMoonAltNew, WiMoonAltWaxingCrescent3, WiMoonAltWaxingGibbous3, WiMoonAltWaningGibbous3, WiMoonAltWaningCrescent3 } from 'react-icons/wi';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { IconContext } from 'react-icons';
 import { checkNumber } from '../validation';
@@ -33,6 +33,19 @@ function getWeatherIcon(code) {
 	return icon;
 }
 
+function getOpenArray(tabIndex) {
+	let size = 0;
+	switch (tabIndex) {
+		case 0:
+			size = 25;
+			break;
+		case 1:
+			size = 8;
+			break;
+	}
+	return Array(size).fill(false);
+}
+
 const CurrentWeather = (props) => {
 	const [ location, setLocation ] = useState(null);
 	const [ currentWeatherData, setCurrentWeatherData ] = useState(null);
@@ -40,7 +53,7 @@ const CurrentWeather = (props) => {
 	const [ dailyWeatherData, setDailyWeatherData ] = useState(null);
 	const [ historicalWeatherData, setHistoricalWeatherData ] = useState(null);
 	const [ tabIndex, setTabIndex ] = useState(null);
-	const [ open, setOpen ] = useState(Array(25).fill(false));
+	const [ open, setOpen ] = useState(getOpenArray(0));
 	const [ loading, setLoading ] = useState(false);
 	const [ error, setError ] = useState(false);
 
@@ -78,7 +91,7 @@ const CurrentWeather = (props) => {
 					const { data: dailyWeather } = await axios.get(`http://localhost:4000/weather/daily?lat=${location.coordinates.lat}&lon=${location.coordinates.lon}`);
 					setDailyWeatherData(dailyWeather);
 				} catch (e) {
-					alert(e);
+					// alert(e);
 				}
 
 				setLoading(false);
@@ -86,6 +99,13 @@ const CurrentWeather = (props) => {
 		}
 		fetchData();
 	}, [ location ]);
+
+	useEffect(() => {
+		async function fetchData() {
+			setOpen(getOpenArray(tabIndex));
+		}
+		fetchData();
+	}, [ tabIndex ]);
 
 	// Set tabIndex to value selected from Tabs component
 	function selectTab(_, value) {
@@ -100,21 +120,21 @@ const CurrentWeather = (props) => {
 	// Get moon phase based on number between 0 and 1
 	function getMoonPhase(value) {
 		if (value === 0 || value === 1) {
-			return { name: 'New Moon', icon: <WiMoonNew /> };
+			return { name: 'New Moon', icon: <WiMoonAltNew /> };
 		} else if (value < .25) {
-			return { name: 'Waxing Crescent', icon: <WiMoonWaxingCrescent1 /> };
+			return { name: 'Waxing Crescent', icon: <WiMoonAltWaxingCrescent3 /> };
 		} else if (value === .25) {
-			return { name: 'First Quarter Moon', icon: <WiMoonFirstQuarter /> };
+			return { name: 'First Quarter Moon', icon: <WiMoonAltFirstQuarter /> };
 		} else if (value < .5) {
-			return { name: 'Waxing Gibbous', icon: <WiMoonWaxingGibbous1 /> };
+			return { name: 'Waxing Gibbous', icon: <WiMoonAltWaxingGibbous3 /> };
 		} else if (value === .5) {
-			return { name: 'Full Moon', icon: <WiMoonFull /> };
+			return { name: 'Full Moon', icon: <WiMoonAltFull /> };
 		} else if (value < .75) {
-			return { name: 'Waning Gibbous', icon: <WiMoonWaningGibbous1 /> };
+			return { name: 'Waning Gibbous', icon: <WiMoonAltWaningGibbous3 /> };
 		} else if (value === .75) {
-			return { name: 'Third Quarter Moon', icon: <WiMoonThirdQuarter /> };
+			return { name: 'Third Quarter Moon', icon: <WiMoonAltThirdQuarter /> };
 		} else {
-			return { name: 'Waning Crescent', icon: <WiMoonWaningCrescent1 /> };
+			return { name: 'Waning Crescent', icon: <WiMoonAltWaningCrescent3 /> };
 		}
 	}
 
@@ -279,9 +299,7 @@ const CurrentWeather = (props) => {
 								'Time of sunrise',
 								<WiSunrise />,
 								'Sunrise',
-								data.sunrise,
-								'UNITS',
-								true
+								(new Date(data.sunrise * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true })
 							)
 						}
 						{'sunset' in data &&
@@ -289,9 +307,7 @@ const CurrentWeather = (props) => {
 								'Time of sunset',
 								<WiSunset />,
 								'Sunset',
-								data.sunset,
-								'UNITS',
-								true
+								(new Date(data.sunset * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true })
 							)
 						}
 						{'moonrise' in data &&
@@ -299,9 +315,7 @@ const CurrentWeather = (props) => {
 								'Time of moonrise',
 								<WiMoonrise />,
 								'Moonrise',
-								data.moonrise,
-								'UNITS',
-								true
+								(new Date(data.moonrise * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true })
 							)
 						}
 						{'moonset' in data &&
@@ -309,9 +323,7 @@ const CurrentWeather = (props) => {
 								'Time of moonset',
 								<WiMoonset />,
 								'Moonset',
-								data.moonset,
-								'UNITS',
-								true
+								(new Date(data.moonset * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true })
 							)
 						}
 						{'moon_phase' in data &&
@@ -356,7 +368,7 @@ const CurrentWeather = (props) => {
 		var content = <p>Error!</p>
 	} else if (loading) {
 		var content = <p>Loading...</p>
-	} else {
+	} else if (tabIndex !== null) {
 		if (tabIndex === 0 && hourlyWeatherData) {
 			var weatherData = hourlyWeatherData;
 			var header = 'Hourly Forecast';
@@ -366,21 +378,22 @@ const CurrentWeather = (props) => {
 			var weatherData = dailyWeatherData;
 			var header = 'Daily Forecast';
 			var end = 8;
-			var current = null; // TODO
+			var current = dailyWeatherData[0].dt;
 		}
+
 		var content =
 			<div>
 				{
 					weatherData &&
 						<IconContext.Provider value={{size: 50}}>
-							<List subheader={<ListSubheader>{header}</ListSubheader>} sx={{ width: '100%', maxWidth: 300, bgcolor: 'background.paper' }}>
+							<List subheader={<ListSubheader>{header}</ListSubheader>} sx={{ width: '100%', maxWidth: 340, bgcolor: 'background.paper' }}>
 								{weatherData.slice(0, end).map((data, index) => (
 									<div>
 										<ListItemButton divider onClick={() => handleClick(index)}>
 											<ListItemIcon>
 												{getWeatherIcon(data.weather[0].icon)}
 											</ListItemIcon>
-											<ListItemText primary={tabIndex === 0 ? Math.round(data.temp) + ' ºF' : `${Math.round(data.temp.min)}ºF-${Math.round(data.temp.max)}ºF`} secondary={data.dt === current ? 'Now' : (new Date(data.dt * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true })} />
+											<ListItemText primary={tabIndex === 0 ? Math.round(data.temp) + ' ºF' : `${Math.round(data.temp.min)}ºF-${Math.round(data.temp.max)}ºF`} secondary={data.dt === current ? (tabIndex === 0 ? 'Now' : 'Today') : (tabIndex === 0 ? (new Date(data.dt * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true }) : new Date(data.dt * 1000)).toLocaleString('en-US', { weekday: 'long' })} />
 											{open[index] ? <ExpandLess /> : <ExpandMore />}
 										</ListItemButton>
 										<Collapse in={open[index]} timeout='auto' unmountOnExit>
@@ -401,12 +414,12 @@ const CurrentWeather = (props) => {
 			<h2>Current Weather</h2>
 			<div>
 				<p className='selectLabel'>Select a location:</p>
-				<Autocomplete className='selectLocation' defaultValue={location} onChange={onInputChange} options={savedLocations} renderInput={(params) => <TextField {...params} label='Location' />} sx={{width: 300}} filterOptions={(x) => x} />
+				<Autocomplete className='selectLocation' defaultValue={location} onChange={onInputChange} options={savedLocations} renderInput={(params) => <TextField {...params} label='Location' />} sx={{ width: 300 }} />
 				<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
 					<Tabs value={tabIndex} onChange={selectTab}>
-						<Tab label="Hourly Forecast" disabled={!location} />
-						<Tab label="Daily Forecast" disabled={!location} />
-						<Tab label="Historical Data" disabled={!location} />
+						<Tab label="Hourly Forecast" disabled={!location} tabIndex={0} />
+						<Tab label="Daily Forecast" disabled={!location} tabIndex={0} />
+						<Tab label="Historical Data" disabled={!location} tabIndex={0} />
 					</Tabs>
 				</Box>
 			</div>
