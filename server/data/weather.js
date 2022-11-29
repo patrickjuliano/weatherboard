@@ -18,7 +18,10 @@ async function makeRequest(lat, lon, req) {
   const excludeRequests = requests.join();
 
   console.log(`${apiEndpoint}/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=${excludeRequests}&units=imperial&appid=${apiKey}`)
+  console.log('a');
   let { data } = await axios.get(`${apiEndpoint}/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=${excludeRequests}&units=imperial&appid=${apiKey}`);
+  console.log('b');
+
   return data;
 }
 

@@ -89,9 +89,14 @@ h2 {
   margin-top: 0;
 }
 
-.selectLabel, .selectLocation {
+.selectLabel, .selectLocation, .sideBySide {
   display: inline-block;
   vertical-align: middle;
+}
+
+.superscript {
+  display: inline-block;
+  vertical-align: text-top;
 }
 
 .selectLabel {
@@ -100,4 +105,8 @@ h2 {
 
 .nestedListIcon {
   margin-right: 3px;
+}
+
+.cardActions {
+  margin-left: auto;
 }
