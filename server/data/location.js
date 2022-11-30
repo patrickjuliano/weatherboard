@@ -2,7 +2,7 @@ const axios = require('axios');
 const { apiKey, apiEndpoint } = require('../config');
 const validation = require('../validation');
 
-async function getCoordinatesByLocation(location) {
+async function getLocationByName(location) {
     location = validation.checkString(location); // TODO: Write validation function that parses location format
 
     console.log(`${apiEndpoint}/geo/1.0/direct?q=${location}&units=imperial&appid=${apiKey}`);
@@ -10,7 +10,7 @@ async function getCoordinatesByLocation(location) {
     return data;
 }
 
-async function getCoordinatesByZipCode(zipCode) {
+async function getLocationByZipCode(zipCode) {
     // TODO: Write validation function that parses code format
 }
 
@@ -23,7 +23,7 @@ async function getLocationByCoordinates(lat, lon) {
 }
 
 module.exports = {
-    getCoordinatesByLocation,
-    getCoordinatesByZipCode,
+    getLocationByName,
+    getLocationByZipCode,
     getLocationByCoordinates
 }

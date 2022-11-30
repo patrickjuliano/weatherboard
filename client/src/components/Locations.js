@@ -1,12 +1,16 @@
 import { Alert, Button, FormControl, IconButton, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../App.css';
+import axios from 'axios';
 import { checkNumber, checkString } from '../validation';
 
 const Locations = () => {
 	const [ category, setCategory ] = useState('Name');
+	const [ name, setName ] = useState(undefined);
+	const [ coordinates, setCoordinates ] = useState(undefined);
 	const [ error, setError ] = useState(undefined);
+	const [ locationData, setLocationData ] = useState(undefined);
 
 	const handleChange = (event) => {
 		setCategory(event.target.value);
@@ -20,9 +24,9 @@ const Locations = () => {
 			nameField.value = nameField.value.trim();
 			try {
 				const name = checkString(nameField.value);
-				setError(null);
-				alert(name);
+				setName(name);
 			} catch (e) {
+				setLocationData(null);
 				setError(e);
 			}
 		} else if (category === 'Coordinates') {
@@ -33,13 +37,45 @@ const Locations = () => {
 			try {
 				const latitude = checkNumber(latitudeField.value);
 				const longitude = checkNumber(longitudeField.value);
-				setError(null);
-				alert(`(${latitude}, ${longitude})`);
+				setCoordinates({latitude: latitude, longitude: longitude});
 			} catch (e) {
+				setLocationData(null);
 				setError(e);
 			}
 		}
 	}
+
+	useEffect(() => {
+		async function fetchData() {
+			if (name) {
+				try {
+					const { data: location } = await axios.get(`http://localhost:4000/location/name?name=${name}`);
+					setLocationData(location);
+					setError(null);
+				} catch (e) {
+					setLocationData(null);
+					setError('Location not found');
+				}
+			}
+		}
+		fetchData();
+	}, [ name ])
+
+	useEffect(() => {
+		async function fetchData() {
+			if (coordinates) {
+				try {
+					const { data: location } = await axios.get(`http://localhost:4000/location/coordinates?lat=${coordinates.latitude}&lon=${coordinates.longitude}`);
+					setLocationData(location);
+					setError(null);
+				} catch (e) {
+					setLocationData(null);
+					setError('Location not found');
+				}
+			}
+		}
+		fetchData();
+	}, [ coordinates ])
 
 	return (
 		<div>
@@ -66,7 +102,9 @@ const Locations = () => {
 					}
 					<Button type='submit' variant='contained' sx={{ height: 56, width: 56, borderTopLeftRadius: 0, borderBottomLeftRadius: 0, boxShadow: 0 }}><SearchIcon /></Button>
 				</form>
+
 				{error && <Alert severity='error' variant='filled' sx={{ mt: 1 }}>{error}</Alert>}
+				{locationData && <p>{locationData[0].name}, ({locationData[0].lat}, {locationData[0].lon})</p>}
 			</div>
 		</div>
 	);
