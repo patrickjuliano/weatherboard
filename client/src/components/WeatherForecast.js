@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import '../App.css';
 import axios from 'axios';
-import { Autocomplete, Collapse, Divider, List, ListItem, ListItemButton, ListItemText, ListItemIcon, ListSubheader, TextField, Icon, Tooltip, Tabs, Tab, Card, CardContent, Typography, CardHeader, CardActions, IconButton } from '@mui/material';
+import { Autocomplete, Collapse, Divider, List, ListItem, ListItemButton, ListItemText, ListItemIcon, ListSubheader, TextField, Icon, Tooltip, Tabs, Tab, Card, CardContent, Typography, CardHeader, CardActions, IconButton, Button } from '@mui/material';
 import { WiDaySunny, WiDaySunnyOvercast, WiNightClear, WiNightAltPartlyCloudy, WiCloud, WiCloudy, WiShowers, WiRain, WiThunderstorm, WiSnowflakeCold, WiDust, WiBarometer, WiThermometer, WiHumidity, WiStrongWind, WiCloudyGusts, WiDirectionRight, WiRaindrop, WiWindy, WiWindDeg, WiSprinkle, WiSnow, WiStormWarning, WiSunrise, WiSunset, WiMoonrise, WiMoonset, WiMoonFull, WiMoonNew, WiMoonWaningCrescent1, WiMoonFirstQuarter, WiMoonWaxingGibbous1, WiMoonWaningGibbous1, WiMoonThirdQuarter, WiMoonWaxingCrescent1, WiMoonAltWaxingCrescent1, WiMoonAltWaxingGibbous1, WiMoonAltWaningGibbous1, WiMoonAltWaningCrescent1, WiMoonAltThirdQuarter, WiMoonAltFull, WiMoonAltFirstQuarter, WiMoonAltNew, WiMoonAltWaxingCrescent3, WiMoonAltWaxingGibbous3, WiMoonAltWaningGibbous3, WiMoonAltWaningCrescent3 } from 'react-icons/wi';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { IconContext } from 'react-icons';
 import { checkNumber } from '../validation';
 import { Box } from '@mui/system';
+import { Link } from 'react-router-dom';
 
 const weatherIcons = {
 	'01': {
@@ -462,8 +463,11 @@ const CurrentWeather = (props) => {
 		<div>
 			<h2>Weather Forecast</h2>
 			<div>
-				<p className='selectLabel'>Select a location:</p>
-				<Autocomplete className='selectLocation' defaultValue={location} onChange={onInputChange} options={savedLocations} disableClearable renderInput={(params) => <TextField {...params} label='Location' />} sx={{ width: 300}} />
+				<Typography className='selectLabel' sx={{ mr: 1 }}>Select location:</Typography>
+				<Autocomplete className='selectLocation' defaultValue={location} onChange={onInputChange} options={savedLocations} disableClearable renderInput={(params) => <TextField {...params} label='Location' />} sx={{ width: 300 }} />
+				<Typography className='sideBySide' sx={{ ml: 2, mr: 2, color: 'text.secondary' }}>or</Typography>
+				<Button className='sideBySide' variant='contained' component={Link} to='/locations'>Add location</Button>
+
 				{!loading && currentWeatherData && 
 					<Card variant='outlined' sx={{ mt: 2, mb: 1, maxWidth: 340 }}>
 						<CardHeader title={'label' in location ? location.label : 'N/A'} subheader={'dt' in currentWeatherData ? (new Date(currentWeatherData.dt * 1000)).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) : 'N/A'} sx={{ pb: 0 }} />
@@ -488,13 +492,15 @@ const CurrentWeather = (props) => {
 						</Collapse>
 					</Card>
 				}
-				<Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 1 }}>
-					<Tabs value={tabIndex} onChange={selectTab}>
-						<Tab label="Hourly Forecast" disabled={!location} tabIndex={0} />
-						<Tab label="Daily Forecast" disabled={!location} tabIndex={0} />
-						<Tab label="Historical Data" disabled={!location} tabIndex={0} />
-					</Tabs>
-				</Box>
+				{!loading && hourlyWeatherData && dailyWeatherData &&
+					<Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 1 }}>
+						<Tabs value={tabIndex} onChange={selectTab}>
+							<Tab label="Hourly Forecast" tabIndex={0} />
+							<Tab label="Daily Forecast" tabIndex={0} />
+							<Tab label="Historical Data" tabIndex={0} />
+						</Tabs>
+					</Box>
+				}
 			</div>
 			{content}
 		</div>

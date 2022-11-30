@@ -6,9 +6,7 @@ import { RiHome2Fill, RiShowersFill, RiTimeFill, RiSkipForwardFill, RiHistoryFil
 import './App.css';
 
 import Home from './components/Home';
-import CurrentWeather from './components/CurrentWeather';
-import ForecastWeather from './components/ForecastWeather';
-import HistoricalWeather from './components/HistoricalWeather';
+import WeatherForecast from './components/WeatherForecast';
 import Locations from './components/Locations';
 import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
@@ -37,8 +35,8 @@ function App() {
                 <MenuItem className='menuItem' icon={<RiHome2Fill />} routerLink={<Link to='/' />}>Home</MenuItem>
                 <SubMenu className='subMenu' icon={<RiShowersFill />} label='Weather'>
                   <MenuItem className='subMenuItem' icon={<RiTimeFill />} routerLink={<Link to='/weather/current' />}>Current</MenuItem>
-                  <MenuItem className='subMenuItem' icon={<RiSkipForwardFill />} routerLink={<Link to='/weather/forecast' />}>Forecast</MenuItem>
-                  <MenuItem className='subMenuItem' icon={<RiHistoryFill />} routerLink={<Link to='/weather/historical' />}>Historical</MenuItem>
+                  {/* <MenuItem className='subMenuItem' icon={<RiSkipForwardFill />} routerLink={<Link to='/weather/forecast' />}>Forecast</MenuItem>
+                  <MenuItem className='subMenuItem' icon={<RiHistoryFill />} routerLink={<Link to='/weather/historical' />}>Historical</MenuItem> */}
                 </SubMenu>
                 <MenuItem className='menuItem' icon={<RiMapPin2Fill />} routerLink={<Link to='/locations' />}>Locations</MenuItem>
                 <SubMenu className='subMenu' icon={<RiSettings3Fill />} label='Settings'>
@@ -55,9 +53,9 @@ function App() {
           <Routes>
 						<Route path='/' element={<Home />} />
 
-						<Route path='/weather/current' element={<CurrentWeather />} />
-						<Route path='/weather/forecast' element={<ForecastWeather />} />
-						<Route path='/weather/historical' element={<HistoricalWeather />} />
+						<Route path='/weather/current' element={<WeatherForecast />} />
+						{/* <Route path='/weather/forecast' element={<ForecastWeather />} />
+						<Route path='/weather/historical' element={<HistoricalWeather />} /> */}
 
 						<Route path='/locations' element={<Locations />} />
 
