@@ -110,3 +110,13 @@ h2 {
 .cardActions {
   margin-left: auto;
 }
+
+.nonRoundedCornersRight .MuiOutlinedInput-root {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.nonRoundedCornersLeft .MuiOutlinedInput-root {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
