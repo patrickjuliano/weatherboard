@@ -57,7 +57,7 @@ header {
 }
 
 .menu {
-  padding-top: 60px;
+  padding-top: 65px;
 }
 
 .menuItem, .subMenu, .subMenuItem {
@@ -119,4 +119,42 @@ h2 {
 .nonRoundedCornersLeft .MuiOutlinedInput-root {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+}
+
+#loginSignupEmailContainer {
+  padding-bottom: 15px;
+  width: 100%;
+}
+
+#loginSignupPasswordContainer {
+  padding-bottom: 15px;
+  width: 100%;
+}
+
+#signupConfirmPasswordContainer {
+  padding-bottom: 15px;
+  width: 100%;
+}
+
+#loginSignupButton {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+#loginSignupTextContainer {
+  text-align: center;
+}
+
+#loginSignupLink {
+  color: #181818;
+  font-weight: bold;
+  text-decoration: none;
+}
+#loginSignupLink:hover {
+  color: black;
+  font-weight: bolder;
+}
+
+#loginSignupIcon {
+  vertical-align: middle;
 }
