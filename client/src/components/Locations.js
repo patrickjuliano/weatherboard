@@ -5,7 +5,7 @@ import '../App.css';
 import axios from 'axios';
 import { checkNumber, checkString } from '../validation';
 
-const Locations = () => {
+const Locations = ( {currentUserEmail} ) => {
 	const [ category, setCategory ] = useState('Name');
 	const [ name, setName ] = useState(undefined);
 	const [ coordinates, setCoordinates ] = useState(undefined);
