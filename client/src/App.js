@@ -36,11 +36,15 @@ function App() {
     if(!isLoggedIn && sessionStorage.getItem('Auth Token')){
       setIsLoggedIn(true);
     }
+    if(!currentUserEmail && sessionStorage.getItem('Email')){
+      setCurrentUserEmail(sessionStorage.getItem('Email'));
+    }
   }, [])
 
   //For ability to logout through entire application
   const handleLogout = () => {
     sessionStorage.removeItem('Auth Token');
+    sessionStorage.removeItem('Email');
     setCurrentUserEmail('');
     setIsLoggedIn(false);
     toast.info('Successfully logged out. Come back soon!')
@@ -82,7 +86,7 @@ function App() {
 						{/* <Route path='/weather/forecast' element={<ForecastWeather />} />
 						<Route path='/weather/historical' element={<HistoricalWeather />} /> */}
 
-						<Route path='/locations' element={<Locations />} />
+						<Route path='/locations' element={<Locations currentUserEmail={currentUserEmail} />} />
 
 						<Route path='/login' element={<LogIn setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} />} />
 						<Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} />} /> 

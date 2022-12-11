@@ -40,6 +40,7 @@ export default function LogIn({ setIsLoggedIn, setCurrentUserEmail }) {
 					const authentication = getAuth();
 					let response = await signInWithEmailAndPassword(authentication, data.email, data.password);
 					sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken);
+					sessionStorage.setItem('Email', response._tokenResponse.email);
 					setCurrentUserEmail(response._tokenResponse.email);
 					setIsLoggedIn(true);
 					toast.success('All set. Welcome Back!');
@@ -55,6 +56,7 @@ export default function LogIn({ setIsLoggedIn, setCurrentUserEmail }) {
 			const authentication = getAuth();
 			let result = await signInWithPopup(authentication, provider);
 			sessionStorage.setItem('Auth Token', result._tokenResponse.refreshToken);
+			sessionStorage.setItem('Email', result._tokenResponse.email);
 			setCurrentUserEmail(result._tokenResponse.email);
 			setIsLoggedIn(true);
 			toast.success('All set. Welcome back!');
