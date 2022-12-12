@@ -79,6 +79,7 @@ const Locations = ( {currentUserEmail} ) => {
 
 	return (
 		<div>
+			<p>{currentUserEmail ? currentUserEmail : "Nope!"}</p>
             <h2>Locations</h2>
 			<div>
 				<form onSubmit={handleSubmit}>

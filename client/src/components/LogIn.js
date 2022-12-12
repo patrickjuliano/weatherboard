@@ -10,7 +10,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function LogIn({ setIsLoggedIn, setCurrentUserEmail }) {
+export default function LogIn({ setIsLoggedIn, setCurrentUserEmail, setCurrentUserID }) {
 	const [data, setData] = React.useState({
 		email: '',
 		password: '',
@@ -43,6 +43,7 @@ export default function LogIn({ setIsLoggedIn, setCurrentUserEmail }) {
 					sessionStorage.setItem('Auth Token', response.user.accessToken);
 					sessionStorage.setItem('Email', response.user.email);
 					setCurrentUserEmail(response.user.email);
+					setCurrentUserID(response.user.uid);
 					setIsLoggedIn(true);
 					toast.success('All set. Welcome Back!');
 					navigate('/');
@@ -60,6 +61,7 @@ export default function LogIn({ setIsLoggedIn, setCurrentUserEmail }) {
 			sessionStorage.setItem('Auth Token', result.user.accessToken);
 			sessionStorage.setItem('Email', result.user.email);
 			setCurrentUserEmail(result.user.email);
+			setCurrentUserID(result.user.uid);
 			setIsLoggedIn(true);
 			toast.success('All set. Welcome back!');
 			navigate('/');

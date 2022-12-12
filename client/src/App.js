@@ -33,6 +33,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function App() {
   const [ isLoggedIn, setIsLoggedIn ] = React.useState(false);
   const [ currentUserEmail, setCurrentUserEmail ] = React.useState('');
+  const [ currentUserID, setCurrentUserID ] = React.useState('');
   const [ loading, setLoading ] = React.useState(true);
 
   React.useEffect(() => {
@@ -42,11 +43,13 @@ function App() {
       if(user){
         setIsLoggedIn(true);
         setCurrentUserEmail(user.email);
+        setCurrentUserID(user.uid);
         sessionStorage.setItem('Email', user.email);
         sessionStorage.setItem('Auth Token', user.accessToken);
       } else {
         setIsLoggedIn(false);
         setCurrentUserEmail('');
+        setCurrentUserID(null);
       }
       setLoading(false);
     });
@@ -58,6 +61,7 @@ function App() {
     sessionStorage.removeItem('Auth Token');
     sessionStorage.removeItem('Email');
     setCurrentUserEmail('');
+    setCurrentUserID(null);
     setIsLoggedIn(false);
     try {
       await auth.signOut();
@@ -107,7 +111,7 @@ function App() {
                   <MenuItem className='subMenuItem' icon={<RiMoonFill />}>Theme</MenuItem>
                 </SubMenu>
                 {isLoggedIn
-                  ? <MenuItem className='menuItem' icon={<RiLogoutBoxFill />} onClick={handleLogout} routerLink={<Link to='/login' />}>Log out</MenuItem>
+                  ? <MenuItem className='menuItem' icon={<RiLogoutBoxFill />} onClick={handleLogout} routerLink={<Link to='/login' />}>Log Out</MenuItem>
                   : <MenuItem className='menuItem' icon={<RiLoginBoxFill />} routerLink={<Link to='/login' />}>Log In</MenuItem>
                 }
               </Menu>
@@ -124,8 +128,8 @@ function App() {
 
 						<Route path='/locations' element={<Locations currentUserEmail={currentUserEmail} />} />
 
-						<Route path='/login' element={<LogIn setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} />} />
-						<Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} />} />
+						<Route path='/login' element={<LogIn setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} setCurrentUserID={setCurrentUserID} />} />
+						<Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} setCurrentUserID={setCurrentUserID} />} />
             <Route path='/credentials' element={<Credentials setIsLoggedIn={setIsLoggedIn} currentUserEmail={currentUserEmail} />} /> 
 
             <Route path='/error' element={<Error />} />
