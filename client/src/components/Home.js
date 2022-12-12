@@ -1,7 +1,7 @@
 import React from 'react';
 import '../App.css';
 
-const Home = () => {
+const Home = ( {currentUserEmail} ) => {
 	return (
 		<div>
             <h2>Home</h2>

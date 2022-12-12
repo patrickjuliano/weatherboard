@@ -4,10 +4,10 @@ import { checkString, checkEmail, checkMatchingStrings } from '../validation';
 import { Button, Box, OutlinedInput, InputLabel, FormControl, TextField, InputAdornment, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff, PersonAdd, Login, Google } from '@mui/icons-material';
 
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { useNavigate, Link } from 'react-router-dom';
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function SignUp({ setIsLoggedIn, setCurrentUserEmail }) {
@@ -48,10 +48,11 @@ export default function SignUp({ setIsLoggedIn, setCurrentUserEmail }) {
 					checkMatchingStrings(data.password, data.confirmPassword);
 					try {
 						const authentication = getAuth();
+						await setPersistence(authentication, browserLocalPersistence);
 						let response = await createUserWithEmailAndPassword(authentication, data.email, data.password);
-						sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken);
-						sessionStorage.setItem('Email', response._tokenResponse.email);
-						setCurrentUserEmail(response._tokenResponse.email);
+						sessionStorage.setItem('Auth Token', response.user.accessToken);
+						sessionStorage.setItem('Email', response.user.email);
+						setCurrentUserEmail(response.user.email);
 						setIsLoggedIn(true);
 						toast.success('All set. Welcome to Weatherboard!');
 						navigate('/');
@@ -69,10 +70,11 @@ export default function SignUp({ setIsLoggedIn, setCurrentUserEmail }) {
 	const handleGoogle = async () => {
 		try {
 			const authentication = getAuth();
+			await setPersistence(authentication, browserLocalPersistence);
 			let result = await signInWithPopup(authentication, provider);
-			sessionStorage.setItem('Auth Token', result._tokenResponse.refreshToken);
-			sessionStorage.setItem('Email', result._tokenResponse.email);
-			setCurrentUserEmail(result._tokenResponse.email);
+			sessionStorage.setItem('Auth Token', result.user.accessToken);
+			sessionStorage.setItem('Email', result.user.email);
+			setCurrentUserEmail(result.user.email);
 			setIsLoggedIn(true);
 			toast.success('All set. Welcome to Weatherboard!');
 			navigate('/');
@@ -88,7 +90,6 @@ export default function SignUp({ setIsLoggedIn, setCurrentUserEmail }) {
 	return (
 		<div>
             <h2>Sign Up</h2>
-			<ToastContainer />
 			<Box 
 				sx={{
 					width: 350,
@@ -155,7 +156,7 @@ export default function SignUp({ setIsLoggedIn, setCurrentUserEmail }) {
 					endIcon={<PersonAdd />}
 					onClick={handleSignUp}
 					onMouseDown={handlePreventDefault}
-					id="loginSignupButton">
+					id="loginSignupDeleteButton">
 						Sign up
 				</Button>
 				<div id='loginSignupTextContainer'>
