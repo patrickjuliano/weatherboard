@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import '../App.css';
 import axios from 'axios';
-import { Autocomplete, Collapse, Divider, List, ListItem, ListItemButton, ListItemText, ListItemIcon, ListSubheader, TextField, Icon, Tooltip, Tabs, Tab, Card, CardContent, Typography, CardHeader, CardActions, IconButton, Button } from '@mui/material';
+import { Autocomplete, Collapse, Divider, List, ListItem, ListItemButton, ListItemText, ListItemIcon, ListSubheader, TextField, Icon, Tooltip, Tabs, Tab, Card, CardContent, Typography, CardHeader, CardActions, IconButton, Button, Alert } from '@mui/material';
 import { WiDaySunny, WiDaySunnyOvercast, WiNightClear, WiNightAltPartlyCloudy, WiCloud, WiCloudy, WiShowers, WiRain, WiThunderstorm, WiSnowflakeCold, WiDust, WiBarometer, WiThermometer, WiHumidity, WiStrongWind, WiCloudyGusts, WiDirectionRight, WiRaindrop, WiWindy, WiWindDeg, WiSprinkle, WiSnow, WiStormWarning, WiSunrise, WiSunset, WiMoonrise, WiMoonset, WiMoonFull, WiMoonNew, WiMoonWaningCrescent1, WiMoonFirstQuarter, WiMoonWaxingGibbous1, WiMoonWaningGibbous1, WiMoonThirdQuarter, WiMoonWaxingCrescent1, WiMoonAltWaxingCrescent1, WiMoonAltWaxingGibbous1, WiMoonAltWaningGibbous1, WiMoonAltWaningCrescent1, WiMoonAltThirdQuarter, WiMoonAltFull, WiMoonAltFirstQuarter, WiMoonAltNew, WiMoonAltWaxingCrescent3, WiMoonAltWaxingGibbous3, WiMoonAltWaningGibbous3, WiMoonAltWaningCrescent3 } from 'react-icons/wi';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { IconContext } from 'react-icons';
-import { checkNumber } from '../validation';
+import { checkNumber, checkString } from '../validation';
 import { Box } from '@mui/system';
 import { Link } from 'react-router-dom';
 
@@ -47,7 +47,7 @@ function getOpenArray(tabIndex) {
 	return Array(size).fill(false);
 }
 
-const CurrentWeather = (props) => {
+const CurrentWeather = ({ currentUserID }) => {
 	const [ location, setLocation ] = useState(null);
 	const [ currentWeatherData, setCurrentWeatherData ] = useState(null);
 	const [ hourlyWeatherData, setHourlyWeatherData ] = useState(null);
@@ -58,6 +58,7 @@ const CurrentWeather = (props) => {
 	const [ currentOpen, setCurrentOpen ] = useState(false);
 	const [ loading, setLoading ] = useState(false);
 	const [ error, setError ] = useState(false);
+	const [ savedLocations, setSavedLocations ] = useState(undefined);
 
 	const handleClick = (index) => {
 		const newValue = !open[index];
@@ -69,6 +70,25 @@ const CurrentWeather = (props) => {
 	const handleClickCurrent = () => {
 		setCurrentOpen(!currentOpen);
 	}
+
+	useEffect(() => {
+		async function fetchData() {
+			try {
+				const id = checkString(currentUserID);
+
+				try {
+					const { data } = await axios.get(`http://localhost:4000/account/${id}`);
+					setSavedLocations(data.savedLocations);
+				} catch (e) {
+					const { data } = await axios.post(`http://localhost:4000/account/${id}`);
+					setSavedLocations(data.savedLocations);
+				}
+			} catch (e) {
+				setError('User is not logged in');
+			}
+		}
+		fetchData();
+	}, []);
 
 	useEffect(() => {
 		async function fetchData() {
@@ -87,16 +107,16 @@ const CurrentWeather = (props) => {
 				}
 
 				try {
-					location.coordinates.lat = checkNumber(location.coordinates.lat);
-					location.coordinates.lon = checkNumber(location.coordinates.lon);
+					location.lat = checkNumber(location.lat);
+					location.lon = checkNumber(location.lon);
 
-					const { data: currentWeather } = await axios.get(`http://localhost:4000/weather/current?lat=${location.coordinates.lat}&lon=${location.coordinates.lon}`);
+					const { data: currentWeather } = await axios.get(`http://localhost:4000/weather/current?lat=${location.lat}&lon=${location.lon}`);
 					setCurrentWeatherData(currentWeather);
 
-					const { data: hourlyWeather } = await axios.get(`http://localhost:4000/weather/hourly?lat=${location.coordinates.lat}&lon=${location.coordinates.lon}`);
+					const { data: hourlyWeather } = await axios.get(`http://localhost:4000/weather/hourly?lat=${location.lat}&lon=${location.lon}`);
 					setHourlyWeatherData(hourlyWeather);
 
-					const { data: dailyWeather } = await axios.get(`http://localhost:4000/weather/daily?lat=${location.coordinates.lat}&lon=${location.coordinates.lon}`);
+					const { data: dailyWeather } = await axios.get(`http://localhost:4000/weather/daily?lat=${location.lat}&lon=${location.lon}`);
 					setDailyWeatherData(dailyWeather);
 				} catch (e) {
 					alert(e);
@@ -411,13 +431,8 @@ const CurrentWeather = (props) => {
 		}
 	}
 
-	const savedLocations = [
-		{label: 'Hoboken, NJ', coordinates: {lat: 40.744052, lon: -74.0270745}}, 
-		{label: 'Worcester, MA', coordinates: {lat: 42.2625621, lon: -71.8018877}}
-	]
-
 	if (error) {
-		var content = <p>Error!</p>
+		var content = <Alert severity='error' variant='filled' sx={{ mt: 1 }}>{error}</Alert>
 	} else if (loading) {
 		var content = <p>Loading...</p>
 	} else if (tabIndex !== null) {
@@ -463,10 +478,14 @@ const CurrentWeather = (props) => {
 		<div>
 			<h2>Weather Forecast</h2>
 			<div>
-				<Typography className='selectLabel' sx={{ mr: 1 }}>Select location:</Typography>
-				<Autocomplete className='selectLocation' defaultValue={location} onChange={onInputChange} options={savedLocations} disableClearable renderInput={(params) => <TextField {...params} label='Location' />} sx={{ width: 300 }} />
-				<Typography className='sideBySide' sx={{ ml: 2, mr: 2, color: 'text.secondary' }}>or</Typography>
-				<Button className='sideBySide' variant='contained' component={Link} to='/locations'>Add location</Button>
+				{savedLocations &&
+					<div>
+						<Typography className='selectLabel' sx={{ mr: 1 }}>Select location:</Typography>
+						<Autocomplete className='selectLocation' defaultValue={location} onChange={onInputChange} options={savedLocations} disableClearable renderInput={(params) => <TextField {...params} label='Location' />} sx={{ width: 300 }} />
+						<Typography className='sideBySide' sx={{ ml: 2, mr: 2, color: 'text.secondary' }}>or</Typography>
+						<Button className='sideBySide' variant='contained' component={Link} to='/locations'>Add location</Button>
+					</div>
+				}
 
 				{!loading && currentWeatherData && 
 					<Card variant='outlined' sx={{ mt: 2, mb: 1, maxWidth: 340 }}>

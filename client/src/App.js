@@ -122,11 +122,11 @@ function App() {
           <Routes>
 						<Route path='/' element={<Home currentUserEmail={currentUserEmail} />} />
 
-						<Route path='/weather/current' element={<WeatherForecast />} />
+						<Route path='/weather/current' element={<WeatherForecast currentUserID={currentUserID} />} />
 						{/* <Route path='/weather/forecast' element={<ForecastWeather />} />
 						<Route path='/weather/historical' element={<HistoricalWeather />} /> */}
 
-						<Route path='/locations' element={<Locations currentUserEmail={currentUserEmail} />} />
+						<Route path='/locations' element={<Locations currentUserID={currentUserID} />} />
 
 						<Route path='/login' element={<LogIn setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} setCurrentUserID={setCurrentUserID} />} />
 						<Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} setCurrentUserID={setCurrentUserID} />} />
