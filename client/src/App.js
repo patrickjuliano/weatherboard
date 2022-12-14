@@ -12,7 +12,7 @@ import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
 import Error from './components/Error';
 import Credentials from './components/Credentials';
-import { AppBar, Box, CssBaseline, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Tab, Tabs, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, CssBaseline, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Tab, Tabs, Toolbar, Typography } from '@mui/material';
 
 import MoonLoader from 'react-spinners/MoonLoader'
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -20,15 +20,8 @@ import { app } from './firebase-config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// const sidebarWidth = 200;
-// const sidebarTabs = [
-//   { route: '/', text: 'Home', icon: <RiHome2Fill /> },
-//   { route: '/weather/current', text: 'Weather', icon: <RiShowersFill /> },
-//   { route: '/locations', text: 'Locations', icon: <RiMapPin2Fill /> },
-//   { route: '/', text: 'Settings', icon: <RiSettings3Fill /> },
-//   { route: '/login', text: 'Log In', icon: <RiLoginBoxFill /> },
-//   { route: '/signup', text: 'Sign Up', icon: <RiAddBoxFill /> }
-// ];
+const sidebarWidth = 200;
+
 
 function App() {
   const [ isLoggedIn, setIsLoggedIn ] = React.useState(false);
@@ -79,6 +72,64 @@ function App() {
     marginTop: "40vh",
   }
 
+  const sidebarTabs = [
+    {
+      route: "/",
+      label: "Home",
+      icon: <RiHome2Fill />
+    },
+    {
+      route: "/weather/current",
+      label: "Forecast",
+      icon: <RiShowersFill />
+    },
+    {
+      route: "/locations",
+      label: "Locations",
+      icon: <RiMapPin2Fill />
+    }
+  ]
+  if (isLoggedIn) {
+    sidebarTabs.push({
+      route: "/credentials",
+      label: "Credentials",
+      icon: <RiEdit2Fill />
+    });
+    sidebarTabs.push({
+      route: '/login',
+      label: 'Log Out',
+      icon: <RiLogoutBoxFill />,
+      onClick: handleLogout
+    });
+  } else {
+    sidebarTabs.push({
+      route: '/login',
+      label: 'Log In',
+      icon: <RiLoginBoxFill />
+    });
+  }
+
+  const sidebar = (
+    <div>
+      <Toolbar />
+      <Divider />
+      <List>
+        {sidebarTabs.map((tab, index) => (
+          <ListItem key={tab.label} disablePadding>
+            <ListItemButton component={Link} to={tab.route} onClick={tab.onClick}>
+              <ListItemIcon>
+                <IconContext.Provider value={{size: 24}}>
+                  {tab.icon}
+                </IconContext.Provider>
+              </ListItemIcon>
+              <ListItemText primary={tab.label} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </div>
+  );
+
   if (loading) {
     return(
       <MoonLoader 
@@ -94,7 +145,71 @@ function App() {
     <Router>
       <div className='App'>
       <ToastContainer />
-        <header>
+        <Box sx={{ display: 'flex' }}>
+          <CssBaseline />
+          <AppBar
+            position='fixed'
+            sx={{
+              width: `calc(100% - ${sidebarWidth}px)`,
+              ml: `${sidebarWidth}px`,
+            }}
+          >
+            <Toolbar>
+              <Typography variant='h6' component='div' noWrap>
+                Weatherboard
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Drawer
+            sx={{
+              width: sidebarWidth,
+              flexShrink: 0,
+              '& .MuiDrawer-paper': {
+                width: sidebarWidth,
+                boxSizing: 'border-box',
+              },
+            }}
+            variant='permanent'
+          >
+            {sidebar}
+          </Drawer>
+          <Box
+            component='main'
+            sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
+          >
+            <Toolbar />
+            <div className='App-body'>
+              <Routes>
+                <Route path='/' element={<Home currentUserEmail={currentUserEmail} />} />
+
+                <Route path='/weather/current' element={<WeatherForecast currentUserID={currentUserID} />} />
+                {/* <Route path='/weather/forecast' element={<ForecastWeather />} />
+                <Route path='/weather/historical' element={<HistoricalWeather />} /> */}
+
+                <Route path='/locations' element={<Locations currentUserID={currentUserID} />} />
+
+                <Route path='/login' element={<LogIn setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} setCurrentUserID={setCurrentUserID} />} />
+                <Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} setCurrentUserID={setCurrentUserID} />} />
+                <Route path='/credentials' element={<Credentials setIsLoggedIn={setIsLoggedIn} currentUserEmail={currentUserEmail} />} /> 
+
+                <Route path='/error' element={<Error />} />
+                <Route path='*' element={<Navigate to={'/error'} replace />} />
+              </Routes>
+            </div>
+          </Box>
+        </Box>
+
+
+
+
+
+
+
+
+
+
+
+        {/* <header>
           <h1 className='title'>Weatherboard</h1>
           <IconContext.Provider value={{size: 28}}>
             <Sidebar className='sidebar' backgroundColor='#1E1E1E' transitionDuration={0}>
@@ -102,8 +217,8 @@ function App() {
                 <MenuItem className='menuItem' icon={<RiHome2Fill />} routerLink={<Link to='/' />}>Home</MenuItem>
                 <SubMenu className='subMenu' icon={<RiShowersFill />} label='Weather'>
                   <MenuItem className='subMenuItem' icon={<RiTimeFill />} routerLink={<Link to='/weather/current' />}>Current</MenuItem>
-                  {/* <MenuItem className='subMenuItem' icon={<RiSkipForwardFill />} routerLink={<Link to='/weather/forecast' />}>Forecast</MenuItem>
-                  <MenuItem className='subMenuItem' icon={<RiHistoryFill />} routerLink={<Link to='/weather/historical' />}>Historical</MenuItem> */}
+                  <MenuItem className='subMenuItem' icon={<RiSkipForwardFill />} routerLink={<Link to='/weather/forecast' />}>Forecast</MenuItem>
+                  <MenuItem className='subMenuItem' icon={<RiHistoryFill />} routerLink={<Link to='/weather/historical' />}>Historical</MenuItem>
                 </SubMenu>
                 <MenuItem className='menuItem' icon={<RiMapPin2Fill />} routerLink={<Link to='/locations' />}>Locations</MenuItem>
                 <SubMenu className='subMenu' icon={<RiSettings3Fill />} label='Settings'>
@@ -117,14 +232,14 @@ function App() {
               </Menu>
             </Sidebar>
           </IconContext.Provider>
-        </header>
-        <div className='App-body'>
+        </header> */}
+        {/* <div className='App-body'>
           <Routes>
 						<Route path='/' element={<Home currentUserEmail={currentUserEmail} />} />
 
 						<Route path='/weather/current' element={<WeatherForecast currentUserID={currentUserID} />} />
-						{/* <Route path='/weather/forecast' element={<ForecastWeather />} />
-						<Route path='/weather/historical' element={<HistoricalWeather />} /> */}
+						<Route path='/weather/forecast' element={<ForecastWeather />} />
+						<Route path='/weather/historical' element={<HistoricalWeather />} />
 
 						<Route path='/locations' element={<Locations currentUserID={currentUserID} />} />
 
@@ -135,7 +250,7 @@ function App() {
             <Route path='/error' element={<Error />} />
             <Route path='*' element={<Navigate to={'/error'} replace />} />
 					</Routes>
-        </div>
+        </div> */}
       </div>
     </Router>
   );

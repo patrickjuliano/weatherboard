@@ -91,15 +91,15 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail }) {
     if(user.providerData[0].providerId == 'google.com'){
         return (
             <div>
-            <h2>Credentials</h2>
+            <h1>Credentials</h1>
 			<Box 
 				sx={{
 					width: 350,
 					height: 500,
 				}}
 			>
-				<h3>Account Email: <span className="smallText">&nbsp;&nbsp;&nbsp;{currentUserEmail}</span></h3>
-                <h3>Update Password: </h3>
+				<h2>Account Email: <span className="smallText">&nbsp;&nbsp;&nbsp;{currentUserEmail}</span></h2>
+                <h2>Update Password: </h2>
                 <p>Accounts logged in through google cannot change password</p>
                 <Button 
 					label='Delete user'
@@ -128,7 +128,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail }) {
                       textAlign: 'center',
                       boxShadow: 24,
                     }}>
-                        <h3>Are you sure you want to delete your account?</h3>
+                        <h2>Are you sure you want to delete your account?</h2>
                         <p>This action cannot be undone</p>
                         <Button 
                             label='cancel delete user'
@@ -158,15 +158,15 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail }) {
     } else {
         return (
             <div>
-            <h2>Credentials</h2>
+            <h1>Credentials</h1>
 			<Box 
 				sx={{
 					width: 350,
 					height: 500,
 				}}
 			>
-				<h3>Account Email: <span className="smallText">&nbsp;&nbsp;&nbsp;{currentUserEmail}</span></h3>
-                <h3>Change Password: </h3>
+				<h2>Account Email: <span className="smallText">&nbsp;&nbsp;&nbsp;{currentUserEmail}</span></h2>
+                <h2>Change Password: </h2>
 				<FormControl variant='outlined' id='loginSignupPasswordContainer'>
 					<InputLabel htmlFor='newPassword'>New Password</InputLabel>
 					<OutlinedInput 
@@ -178,7 +178,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail }) {
 						endAdornment={
 							<InputAdornment position='end'>
 								<IconButton 
-									label='Toggle Password Visibility' 
+									aria-label='Toggle Password Visibility' 
 									onClick={handleShowPassword}
 									onMouseDown={handlePreventDefault}
 									edge='end'
@@ -200,7 +200,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail }) {
 						endAdornment={
 							<InputAdornment position='end'>
 								<IconButton 
-									label='Toggle Confirm Password Visibility' 
+									aria-label='Toggle Confirm Password Visibility' 
 									onClick={handleShowConfirmPassword}
 									onMouseDown={handlePreventDefault}
 									edge='end'
@@ -223,7 +223,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail }) {
                 </Button>
                 <Button 
 					label='Delete user'
-					sx={{ backgroundColor: '#FF6961', '&:hover': { backgroundColor: 'red'}, }}
+                    color='error'
 					variant='contained' 
 					endIcon={<DeleteForever />}
 					onClick={handleOpen}
@@ -248,7 +248,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail }) {
                       textAlign: 'center',
                       boxShadow: 24,
                     }}>
-                        <h3>Are you sure you want to delete your account?</h3>
+                        <h2>Are you sure you want to delete your account?</h2>
                         <p>This action cannot be undone</p>
                         <Button 
                             label='cancel delete user'

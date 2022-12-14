@@ -76,7 +76,7 @@ export default function LogIn({ setIsLoggedIn, setCurrentUserEmail, setCurrentUs
 
 	return (
 		<div>
-            <h2>Log In</h2>
+            <h1>Log In</h1>
 			<Box 
 				sx={{
 					width: 350,
@@ -103,7 +103,7 @@ export default function LogIn({ setIsLoggedIn, setCurrentUserEmail, setCurrentUs
 						endAdornment={
 							<InputAdornment position='end'>
 								<IconButton 
-									label='Toggle Password Visibility' 
+									aria-label='Toggle Password Visibility' 
 									onClick={handleShowPassword}
 									onMouseDown={handlePreventDefault}
 									edge='end'

@@ -4,7 +4,7 @@ import '../App.css';
 const Home = ( {currentUserEmail} ) => {
 	return (
 		<div>
-            <h2>Home</h2>
+            <h1 sx={{ variant: 'h3' }}>Home</h1>
 		</div>
 	);
 };

@@ -91,7 +91,7 @@ export default function SignUp({ setIsLoggedIn, setCurrentUserEmail, setCurrentU
 
 	return (
 		<div>
-            <h2>Sign Up</h2>
+            <h1>Sign Up</h1>
 			<Box 
 				sx={{
 					width: 350,
@@ -118,7 +118,7 @@ export default function SignUp({ setIsLoggedIn, setCurrentUserEmail, setCurrentU
 						endAdornment={
 							<InputAdornment position='end'>
 								<IconButton 
-									label='Toggle Password Visibility' 
+									aria-label='Toggle Password Visibility' 
 									onClick={handleShowPassword}
 									onMouseDown={handlePreventDefault}
 									edge='end'
@@ -140,7 +140,7 @@ export default function SignUp({ setIsLoggedIn, setCurrentUserEmail, setCurrentU
 						endAdornment={
 							<InputAdornment position='end'>
 								<IconButton 
-									label='Toggle Confirm Password Visibility' 
+									aria-label='Toggle Confirm Password Visibility' 
 									onClick={handleShowConfirmPassword}
 									onMouseDown={handlePreventDefault}
 									edge='end'

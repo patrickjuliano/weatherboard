@@ -162,7 +162,7 @@ const Locations = ({ currentUserID }) => {
 
 	return (
 		<div>
-            <h2>Locations</h2>
+            <h1>Locations</h1>
 			<div>
 				{currentUserID &&
 					<form onSubmit={handleSubmit}>
@@ -173,18 +173,18 @@ const Locations = ({ currentUserID }) => {
 								<MenuItem value='Coordinates'>Coordinates</MenuItem>
 							</Select>
 						</FormControl> */}
-						{
+						{/* {
 							category === 'Name' ?
-								// <TextField label='Location' InputProps={{ endAdornment: <IconButton aria-label='search' color='primary' type='submit' sx={{ mr: -1 }}><SearchIcon /></IconButton> }} sx={{ width: 300 }} />
 								<TextField id='nameField' className='nonRoundedCornersRight' label='Location' sx={{ width: 300 }} />
 							:
 								<div className='sideBySide'>
 									<TextField id='latitudeField' className='nonRoundedCornersRight' label='Latitude' sx={{ width: 150, borderRight: 0 }} />
 									<TextField id='longitudeField' className='nonRoundedCornersLeft nonRoundedCornersRight' label='Longitude' sx={{ width: 150 }} />
-									{/* <IconButton aria-label='search' color='primary' type='submit' sx={{ height: 56, width: 56 }}><SearchIcon /></IconButton> */}
+									<IconButton aria-label='search' color='primary' type='submit' sx={{ height: 56, width: 56 }}><SearchIcon /></IconButton>
 								</div>
-						}
-						<Button type='submit' variant='contained' sx={{ height: 56, width: 56, borderTopLeftRadius: 0, borderBottomLeftRadius: 0, boxShadow: 0 }}><SearchIcon /></Button>
+						} */}
+						<TextField id='nameField' className='nonRoundedCornersRight' label='Location' sx={{ width: 300 }} />
+						<Button type='submit' variant='contained' aria-label='submit' sx={{ height: 56, width: 56, borderTopLeftRadius: 0, borderBottomLeftRadius: 0, boxShadow: 0 }}><SearchIcon /></Button>
 					</form>
 				}
 
@@ -192,34 +192,30 @@ const Locations = ({ currentUserID }) => {
 				{!error && locationData && 
 					<List subheader={<ListSubheader>Results</ListSubheader>} sx={{ width: '100%', maxWidth: 340, bgcolor: 'background.paper' }}>
 						{locationData.map((data, index) => (
-							<div>
-								<ListItem secondaryAction={
-									isSaved(data.lat, data.lon) ?
-										<IconButton aria-label='toggle' onClick={() => toggleLocation(false, data)} disabled={loading}>
-											<RemoveCircleOutline />
-										</IconButton> :
-										<IconButton aria-label='toggle' onClick={() => toggleLocation(true, data)} disabled={loading}>
-											<AddCircleOutline />
-										</IconButton>
-								}>
-									<ListItemText primary={`${data.name}${'state' in data ? `, ${data.state}` : ('country' in data ? `, ${data.country}` : '')}`} secondary={`(${data.lat}, ${data.lon})`} />
-								</ListItem>
-							</div>
+							<ListItem secondaryAction={
+								isSaved(data.lat, data.lon) ?
+									<IconButton aria-label='toggle' onClick={() => toggleLocation(false, data)} disabled={loading}>
+										<RemoveCircleOutline />
+									</IconButton> :
+									<IconButton aria-label='toggle' onClick={() => toggleLocation(true, data)} disabled={loading}>
+										<AddCircleOutline />
+									</IconButton>
+							}>
+								<ListItemText primary={`${data.name}${'state' in data ? `, ${data.state}` : ('country' in data ? `, ${data.country}` : '')}`} secondary={`(${data.lat}, ${data.lon})`} />
+							</ListItem>
 						))}
 					</List>
 				}
 				{savedLocations && savedLocations.length > 0 &&
 					<List subheader={<ListSubheader>Saved</ListSubheader>} sx={{ width: '100%', maxWidth: 340, bgcolor: 'background.paper' }}>
 						{savedLocations.map((data, index) => (
-							<div>
-								<ListItem secondaryAction={
-										<IconButton aria-label='toggle' onClick={() => toggleLocation(false, data)} disabled={loading}>
-											<RemoveCircleOutline />
-										</IconButton>
-								}>
-									<ListItemText primary={`${data.name}${data.state ? `, ${data.state}` : ('country' in data ? `, ${data.country}` : '')}`} secondary={`(${data.lat}, ${data.lon})`} />
-								</ListItem>
-							</div>
+							<ListItem secondaryAction={
+									<IconButton aria-label='toggle' onClick={() => toggleLocation(false, data)} disabled={loading}>
+										<RemoveCircleOutline />
+									</IconButton>
+							}>
+								<ListItemText primary={`${data.name}${data.state ? `, ${data.state}` : ('country' in data ? `, ${data.country}` : '')}`} secondary={`(${data.lat}, ${data.lon})`} />
+							</ListItem>
 						))}
 					</List>
 				}
