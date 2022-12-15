@@ -4,7 +4,7 @@ import '../App.css';
 const ForecastWeather = () => {
 	return (
 		<div>
-            <h2>Forecast Weather</h2>
+            <h1>Forecast Weather</h1>
 		</div>
 	);
 };

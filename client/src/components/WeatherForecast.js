@@ -476,7 +476,7 @@ const CurrentWeather = ({ currentUserID }) => {
 
 	return (
 		<div>
-			<h2>Weather Forecast</h2>
+			<h1>Weather Forecast</h1>
 			<div>
 				{savedLocations &&
 					<div>

@@ -4,7 +4,7 @@ import '../App.css';
 const Error = () => {
 	return (
 		<div>
-            <h2>Error</h2>
+            <h1>Error</h1>
 			<p>The page you requested could not be found</p>
 		</div>
 	);
