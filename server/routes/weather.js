@@ -96,12 +96,9 @@ router.get('/historical', async (req, res) => {
         return res.status(400).json({error: e});
     }
     try {
-        const dt = Math.round((Date.now() / 1000));
-        console.log(dt);
-        const date = (new Date(dt * 1000)).toLocaleDateString();
+        const dt = Math.round((Date.now() / 1000) - 3600);
+        const date = (new Date(dt * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', hour12: true }) + " " + (new Date(dt * 1000)).toLocaleDateString();
         const coordinates = `${req.query.lat},${req.query.lon}`;
-
-        console.log(date);
 
         let previousDate = await req.redisClient.hGet('dates', coordinates);
         if (!previousDate) {
@@ -124,11 +121,8 @@ router.get('/historical', async (req, res) => {
         if (!previousDate || previousDateString !== date || !weather) {
             console.log("Adding weather data...");
 
-            console.log(1);
             const data = await weatherData.getHistoricalWeather(req.query.lat, req.query.lon, dt);
-            console.log(2);
             await req.redisClient.hSet('weather', coordinates, JSON.stringify(data));
-            console.log(3);
             return res.status(200).json(data);
         }
         else {

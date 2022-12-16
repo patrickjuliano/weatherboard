@@ -44,11 +44,13 @@ router.post('/:id/location', async (req, res) => {
         req.query.name = validation.checkString(req.query.name);
         req.query.lat = validation.checkNumber(req.query.lat);
         req.query.lon = validation.checkNumber(req.query.lon);
+        req.query.country = validation.checkString(req.query.country);
+        if ('state' in req.query) req.query.state = validation.checkString(req.query.state);
     } catch (e) {
         return res.status(400).json({error: e});
     }
     try {
-        const data = await accountData.addLocation(req.params.id, req.query.name, req.query.lat, req.query.lon);
+        const data = await accountData.addLocation(req.params.id, req.query.name, req.query.lat, req.query.lon, req.query.country, 'state' in req.query ? req.query.state : null);
         return res.status(200).json(data);
     } catch (e) {
         return res.status(404).json({error: e}); // TODO: Status?

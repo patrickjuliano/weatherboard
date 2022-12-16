@@ -109,7 +109,7 @@ const CurrentWeather = ({ currentUserID }) => {
 				try {
 					location.lat = checkNumber(location.lat);
 					location.lon = checkNumber(location.lon);
-
+					
 					const { data: currentWeather } = await axios.get(`http://localhost:4000/weather/current?lat=${location.lat}&lon=${location.lon}`);
 					setCurrentWeatherData(currentWeather);
 

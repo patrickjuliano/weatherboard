@@ -47,8 +47,11 @@ const Locations = ({ currentUserID }) => {
 					const name = checkString(addLocation.name);
 					const lat = checkNumber(addLocation.lat);
 					const lon = checkNumber(addLocation.lon);
+					const country = checkString(addLocation.country);
+					let state;
+					if ('state' in addLocation) state = checkString(addLocation.state);
 
-					const { data } = await axios.post(`http://localhost:4000/account/${id}/location?name=${name}&lat=${lat}&lon=${lon}`);
+					const { data } = await axios.post(`http://localhost:4000/account/${id}/location?name=${name}&lat=${lat}&lon=${lon}&country=${country}${'state' in addLocation ? `&state=${state}` : ''}`);
 					setSavedLocations(data.savedLocations);
 				} catch (e) {
 					setError(e);

@@ -60,24 +60,25 @@ async function getSavedLocations(userId) {
     return user.savedLocations;
 }
 
-async function addLocation(userId, name, lat, lon) {
+async function addLocation(userId, name, lat, lon, country, state) {
     userId = validation.checkString(userId);
     name = validation.checkString(name);
     lat = validation.checkNumber(lat);
     lon = validation.checkNumber(lon);
+    country = validation.checkString(country);
+    if (state !== null) state = validation.checkString(state);
 
     const userCollection = await users();
     let user = await getUser(userId);
-    const location = await locationLibrary.getSpecificLocation(name, lat, lon);
 
     let newLocation = {
         _id: ObjectId(),
-        label: `${location.name}${'state' in location ? `, ${location.state}` : ('country' in location ? `, ${location.country}` : '')}`,
-        lat: location.lat,
-        lon: location.lon,
-        name: location.name,
-        country: location.country,
-        state: 'state' in location ? location.state : null
+        label: `${name}, ${state !== null ? state : country}`,
+        lat: lat,
+        lon: lon,
+        name: name,
+        country: country,
+        state: state !== null ? state : null
     }
 
     const updateInfo = await userCollection.updateOne({ _id: userId }, { $addToSet: { savedLocations: newLocation } });
@@ -95,9 +96,8 @@ async function removeLocation(userId, name, lat, lon) {
 
     const userCollection = await users();
     let user = await getUser(userId);
-    const location = await locationLibrary.getSpecificLocation(name, lat, lon);
 
-    const updateInfo = await userCollection.updateOne({ _id: userId }, { $pull: { savedLocations: { lat: location.lat, lon: location.lon } } });
+    const updateInfo = await userCollection.updateOne({ _id: userId }, { $pull: { savedLocations: { lat: lat, lon: lon } } });
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Could not remove location';
 
     user = await getUser(userId);

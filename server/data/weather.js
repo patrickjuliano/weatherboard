@@ -73,6 +73,7 @@ async function getHistoricalWeather(lat, lon, dt) {
   lon = validation.checkNumber(lon);
   dt = validation.checkTimestamp(dt);
 
+  console.log(`${apiEndpoint}/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${dt}&units=imperial&appid=${apiKey}`);
   let { data } = await axios.get(`${apiEndpoint}/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${dt}&units=imperial&appid=${apiKey}`);
   return data.hourly;
 }

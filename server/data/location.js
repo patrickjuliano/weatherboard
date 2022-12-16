@@ -29,8 +29,19 @@ async function getSpecificLocation(name, lat, lon) {
     lon = validation.checkNumber(lon);
 
     let data = await getLocationByName(name);
+    console.log(data);
+
     let location = data.find((location) => location.lat === lat && location.lon === lon);
-    if (location === undefined) throw 'Location not found';
+    if (location === undefined) {
+        let newData = await getLocationByCoordinates(lat, lon);
+        if (newData.length === 1) {
+            return newData[0];
+        } else {
+            let newLocation = newData.find((location) => location.lat === lat && location.lon === lon);
+            if (newLocation === undefined) throw 'Location not found';
+        }
+    }
+
     return location;
 }
 
