@@ -180,7 +180,7 @@ function App() {
             <Toolbar />
             <div className='App-body'>
               <Routes>
-                <Route path='/' element={<Home currentUserEmail={currentUserEmail} />} />
+                <Route path='/' element={<Home currentUserID={currentUserID} />} />
 
                 <Route path='/weather/current' element={<WeatherForecast currentUserID={currentUserID} />} />
                 {/* <Route path='/weather/forecast' element={<ForecastWeather />} />
