@@ -509,7 +509,6 @@ const CurrentWeather = ({ currentUserID }) => {
 								}
 							</IconContext.Provider>
 							<Typography className='sideBySide' fontSize={50}>{'temp' in currentWeatherData ? Math.round(currentWeatherData.temp) : 'N/A'}<Typography className='superscript' fontSize={25} fontWeight={'bold'} sx={{ pl: 1 }}>ºF </Typography></Typography>
-							
 						</CardContent>
 						<CardActions sx={{ pt: 0 }}>
 							<IconButton aria-label='expand' onClick={handleClickCurrent} sx={{ ml: 'auto' }}>

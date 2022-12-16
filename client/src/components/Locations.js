@@ -1,4 +1,4 @@
-import { Alert, Button, FormControl, IconButton, InputLabel, List, ListItem, ListItemButton, ListItemText, ListSubheader, MenuItem, Select, TextField } from '@mui/material';
+import { Alert, Button, FormControl, IconButton, InputLabel, List, ListItem, ListItemButton, ListItemText, ListSubheader, MenuItem, Select, TextField, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import React, { useEffect, useState } from 'react';
 import '../App.css';
@@ -190,6 +190,8 @@ const Locations = ({ currentUserID }) => {
 									<IconButton aria-label='search' color='primary' type='submit' sx={{ height: 56, width: 56 }}><SearchIcon /></IconButton>
 								</div>
 						} */}
+					<Typography className='selectLabel' sx={{ mr: 1 }}>Search location:</Typography>
+
 						<TextField id='nameField' className='nonRoundedCornersRight' label='Location' sx={{ width: 300 }} />
 						<Button type='submit' variant='contained' aria-label='submit' sx={{ height: 56, width: 56, borderTopLeftRadius: 0, borderBottomLeftRadius: 0, boxShadow: 0 }}><SearchIcon /></Button>
 					</form>
