@@ -188,7 +188,7 @@ function App() {
 
                 <Route path='/locations' element={<Locations currentUserID={currentUserID} />} />
 
-                <Route path='/login' element={<LogIn setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} setCurrentUserID={setCurrentUserID} />} />
+                <Route path='/login' element={currentUserID ? <Navigate replace to='/' /> : <LogIn setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} setCurrentUserID={setCurrentUserID} />} />
                 <Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} setCurrentUserID={setCurrentUserID} />} />
                 <Route path='/credentials' element={<Credentials setIsLoggedIn={setIsLoggedIn} currentUserEmail={currentUserEmail} />} /> 
 
@@ -198,7 +198,6 @@ function App() {
             </div>
           </Box>
         </Box>
-
 
 
 
