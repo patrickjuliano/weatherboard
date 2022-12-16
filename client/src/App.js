@@ -77,19 +77,19 @@ function App() {
       route: "/",
       label: "Home",
       icon: <RiHome2Fill />
-    },
-    {
-      route: "/weather/current",
-      label: "Forecast",
-      icon: <RiShowersFill />
-    },
-    {
-      route: "/locations",
-      label: "Locations",
-      icon: <RiMapPin2Fill />
     }
   ]
   if (isLoggedIn) {
+    sidebarTabs.push({
+      route: "/locations",
+      label: "Locations",
+      icon: <RiMapPin2Fill />
+    });
+    sidebarTabs.push({
+      route: "/weather/current",
+      label: "Forecast",
+      icon: <RiShowersFill />
+    });
     sidebarTabs.push({
       route: "/credentials",
       label: "Credentials",
