@@ -182,15 +182,15 @@ function App() {
               <Routes>
                 <Route path='/' element={<Home currentUserID={currentUserID} />} />
 
-                <Route path='/weather/current' element={<WeatherForecast currentUserID={currentUserID} />} />
+                <Route path='/weather/current' element={!currentUserID ? <Navigate replace to='/login' /> : <WeatherForecast currentUserID={currentUserID} />} />
                 {/* <Route path='/weather/forecast' element={<ForecastWeather />} />
                 <Route path='/weather/historical' element={<HistoricalWeather />} /> */}
 
-                <Route path='/locations' element={<Locations currentUserID={currentUserID} />} />
+                <Route path='/locations' element={!currentUserID ? <Navigate replace to='/login' /> : <Locations currentUserID={currentUserID} />} />
 
                 <Route path='/login' element={currentUserID ? <Navigate replace to='/' /> : <LogIn setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} setCurrentUserID={setCurrentUserID} />} />
                 <Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} setCurrentUserID={setCurrentUserID} />} />
-                <Route path='/credentials' element={<Credentials setIsLoggedIn={setIsLoggedIn} currentUserEmail={currentUserEmail} />} /> 
+                <Route path='/credentials' element={!currentUserID ? <Navigate replace to='/login' /> : <Credentials setIsLoggedIn={setIsLoggedIn} currentUserEmail={currentUserEmail} />} /> 
 
                 <Route path='/error' element={<Error />} />
                 <Route path='*' element={<Navigate to={'/error'} replace />} />
