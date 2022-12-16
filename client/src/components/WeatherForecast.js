@@ -508,7 +508,7 @@ const CurrentWeather = ({ currentUserID }) => {
 									getWeatherIcon(currentWeatherData.weather[0].icon)
 								}
 							</IconContext.Provider>
-							<Typography className='sideBySide' fontSize={50}>{'temp' in currentWeatherData ? Math.round(currentWeatherData.temp) : 'N/A'}<Typography className='superscript' fontSize={25} fontWeight={'bold'} sx={{ pl: 1 }}>ºF </Typography><Typography className='superscript' fontSize={25} fontWeight={'bold'} sx={{ pl: 0.5, color: 'text.secondary' }}>/</Typography><Typography className='superscript' fontSize={25} fontWeight={'bold'} sx={{ pl: 0.5, color: 'text.secondary' }}>ºC</Typography></Typography>
+							<Typography className='sideBySide' fontSize={50}>{'temp' in currentWeatherData ? Math.round(currentWeatherData.temp) : 'N/A'}<Typography className='superscript' fontSize={25} fontWeight={'bold'} sx={{ pl: 1 }}>ºF </Typography></Typography>
 							
 						</CardContent>
 						<CardActions sx={{ pt: 0 }}>

@@ -103,7 +103,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail }) {
                 <p>Accounts logged in through google cannot change password</p>
                 <Button 
 					label='Delete user'
-					sx={{ backgroundColor: '#FF6961', '&:hover': { backgroundColor: 'red'}, }}
+					color='error'
 					variant='contained' 
 					endIcon={<DeleteForever />}
 					onClick={handleOpen}
@@ -142,7 +142,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail }) {
                         </Button>
                         <Button 
                             label='Delete user'
-                            sx={{ backgroundColor: '#FF6961', '&:hover': { backgroundColor: 'red'}, }}
+                            color='error'
                             variant='contained' 
                             endIcon={<DeleteForever />}
                             onClick={handleDelete}
@@ -262,7 +262,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail }) {
                         </Button>
                         <Button 
                             label='Delete user'
-                            sx={{ backgroundColor: '#FF6961', '&:hover': { backgroundColor: 'red'}, }}
+                            color='error'
                             variant='contained' 
                             endIcon={<DeleteForever />}
                             onClick={handleDelete}
