@@ -68,12 +68,13 @@ async function getWeatherAlerts(lat, lon) {
 }
 
 async function getHistoricalWeather(lat, lon, dt) {
+
   lat = validation.checkNumber(lat);
   lon = validation.checkNumber(lon);
   dt = validation.checkTimestamp(dt);
 
-  let { data } = await axios.get(`${apiEndpoint}/data/3.0/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${dt}&units=imperial&appid=${apiKey}`);
-  return data;
+  let { data } = await axios.get(`${apiEndpoint}/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${dt}&units=imperial&appid=${apiKey}`);
+  return data.hourly;
 }
 
 module.exports = {

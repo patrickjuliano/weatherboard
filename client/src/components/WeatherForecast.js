@@ -118,6 +118,9 @@ const CurrentWeather = ({ currentUserID }) => {
 
 					const { data: dailyWeather } = await axios.get(`http://localhost:4000/weather/daily?lat=${location.lat}&lon=${location.lon}`);
 					setDailyWeatherData(dailyWeather);
+
+					const { data: historicalWeather } = await axios.get(`http://localhost:4000/weather/historical?lat=${location.lat}&lon=${location.lon}`);
+					setHistoricalWeatherData(historicalWeather);
 				} catch (e) {
 					alert(e);
 				}
@@ -182,8 +185,7 @@ const CurrentWeather = ({ currentUserID }) => {
 	// Acquire attributes for a given weather data object
 	function createAttributeList(data, current = false) {
 		const index = current ? 0 : tabIndex;
-		switch (index) {
-			case (0):
+			if (index !== 1) {
 				return (
 					<IconContext.Provider value={{className: 'nestedListIcon', color: '#757575', size: 30 }}>
 						<List component='div' sx={{ maxWidth: 340 }}>
@@ -354,7 +356,7 @@ const CurrentWeather = ({ currentUserID }) => {
 						</List>
 					</IconContext.Provider>
 				);
-			case (1):
+			} else {
 				return (
 					<IconContext.Provider value={{className: 'nestedListIcon', color: '#757575', size: 30 }}>
 						<List component='div'>
@@ -428,7 +430,7 @@ const CurrentWeather = ({ currentUserID }) => {
 						</List>
 					</IconContext.Provider>
 				);
-		}
+			}
 	}
 
 	if (error) {
@@ -446,6 +448,11 @@ const CurrentWeather = ({ currentUserID }) => {
 			var header = `Daily Forecast for ${location.label}`;
 			var end = 8;
 			var current = dailyWeatherData[0].dt;
+		} else if (tabIndex === 2 && historicalWeatherData) {
+			var weatherData = historicalWeatherData;
+			var header = `Historical Data for ${location.label}`;
+			var end = -1;
+			var current = -1;
 		}
 
 		var content =
@@ -454,13 +461,17 @@ const CurrentWeather = ({ currentUserID }) => {
 					weatherData &&
 						<IconContext.Provider value={{size: 50}}>
 							<List subheader={<ListSubheader>{header}</ListSubheader>} sx={{ width: '100%', maxWidth: 340, bgcolor: 'background.paper' }}>
-								{weatherData.slice(0, end).map((data, index) => (
+								{weatherData.slice(0, end == -1 ? weatherData.length : end).map((data, index) => (
 									<div>
 										<ListItemButton divider onClick={() => handleClick(index)}>
 											<ListItemIcon>
 												{getWeatherIcon(data.weather[0].icon)}
 											</ListItemIcon>
-											<ListItemText primary={tabIndex === 0 ? Math.round(data.temp) + ' ºF' : `${Math.round(data.temp.min)}ºF-${Math.round(data.temp.max)}ºF`} secondary={data.dt === current ? (tabIndex === 0 ? 'Now' : 'Today') : (tabIndex === 0 ? (new Date(data.dt * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true }) : new Date(data.dt * 1000)).toLocaleString('en-US', { weekday: 'long' })} />
+											{tabIndex === 2 ?
+												<ListItemText primary={Math.round(data.temp) + ' ºF'} secondary={`${new Date(data.dt * 1000).toLocaleString('en-US', { weekday: 'long' })}, ${(new Date(data.dt * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true })}`} />
+											:
+												<ListItemText primary={tabIndex === 0 ? Math.round(data.temp) + ' ºF' : `${Math.round(data.temp.min)}ºF-${Math.round(data.temp.max)}ºF`} secondary={data.dt === current ? (tabIndex === 0 ? 'Now' : 'Today') : (tabIndex === 0 ? (new Date(data.dt * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true }) : new Date(data.dt * 1000)).toLocaleString('en-US', { weekday: 'long' })} />
+											}
 											{open[index] ? <ExpandLess /> : <ExpandMore />}
 										</ListItemButton>
 										<Collapse in={open[index]} timeout='auto' unmountOnExit>
@@ -515,8 +526,8 @@ const CurrentWeather = ({ currentUserID }) => {
 					<Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 1 }}>
 						<Tabs value={tabIndex} onChange={selectTab}>
 							<Tab label="Hourly Forecast" tabIndex={0} />
-							<Tab label="Daily Forecast" tabIndex={0} />
-							<Tab label="Historical Data" tabIndex={0} />
+							<Tab label="Daily Forecast" tabIndex={1} />
+							<Tab label="Historical Data" tabIndex={2} />
 						</Tabs>
 					</Box>
 				}

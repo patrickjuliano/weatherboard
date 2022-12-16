@@ -87,6 +87,8 @@ const Locations = ({ currentUserID }) => {
 		async function fetchData() {
 			if (name) {
 				try {
+					setLoading(true);
+
 					const { data } = await axios.get(`http://localhost:4000/location/name?name=${name}`);
 					setLocationData(data);
 					setError(null);
@@ -94,6 +96,8 @@ const Locations = ({ currentUserID }) => {
 					setLocationData(null);
 					setError('Location not found');
 				}
+				setName(null);
+				setLoading(false);
 			}
 		}
 		fetchData();
@@ -189,7 +193,7 @@ const Locations = ({ currentUserID }) => {
 				}
 
 				{error && <Alert severity='error' variant='filled' sx={{ mt: 1 }}>{error}</Alert>}
-				{!error && locationData && 
+				{!error && !loading && locationData && 
 					<List subheader={<ListSubheader>Results</ListSubheader>} sx={{ width: '100%', maxWidth: 340, bgcolor: 'background.paper' }}>
 						{locationData.map((data, index) => (
 							<ListItem secondaryAction={
