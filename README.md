@@ -25,7 +25,8 @@ steps to run:
 3. run `pipenv shell` (activate virtual env)
 4. to start the server first make the ./run.sh file executable by running `chmod +x run.sh` in terminal (mac) and then run `./run.sh` to start the server, server is on: http://127.0.0.1:8000/ . Alternatively you can run `gunicorn my_app.wsgi:app` to start the server.
 
-To run jupyter notebook (to see model nb):
+To run jupyter notebooks (to see model nb):
 
+* Not necessary to run application, but model would be trained on monthly basis through these notebooks
 - prestep: install jupyter nb https://jupyter.org/install
 - cd into flask_server folder and run: jupyter notebok
