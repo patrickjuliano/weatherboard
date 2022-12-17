@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const xss = require('xss');
 const data = require('../data');
 const accountData = data.account;
 const validation = require('../validation');
 
 router.get('/:id', async (req, res) => {
     try {
-        req.params.id = validation.checkString(req.params.id);
+        req.params.id = validation.checkString(xss(req.params.id));
     } catch (e) {
         return res.status(400).json({error: e});
     }
@@ -20,9 +21,7 @@ router.get('/:id', async (req, res) => {
 
 router.post('/:id', async (req, res) => {
     try {
-        req.params.id = validation.checkString(req.params.id);
-        console.log(2);
-
+        req.params.id = validation.checkString(xss(req.params.id));
     } catch (e) {
         return res.status(400).json({error: e});
     }
@@ -40,12 +39,12 @@ router.post('/:id', async (req, res) => {
 
 router.post('/:id/location', async (req, res) => {
     try {
-        req.params.id = validation.checkString(req.params.id);
-        req.query.name = validation.checkString(req.query.name);
-        req.query.lat = validation.checkNumber(req.query.lat);
-        req.query.lon = validation.checkNumber(req.query.lon);
-        req.query.country = validation.checkString(req.query.country);
-        if ('state' in req.query) req.query.state = validation.checkString(req.query.state);
+        req.params.id = validation.checkString(xss(req.params.id));
+        req.query.name = validation.checkString(xss(req.query.name));
+        req.query.lat = validation.checkNumber(xss(req.query.lat));
+        req.query.lon = validation.checkNumber(xss(req.query.lon));
+        req.query.country = validation.checkString(xss(req.query.country));
+        if ('state' in req.query) req.query.state = validation.checkString(xss(req.query.state));
     } catch (e) {
         return res.status(400).json({error: e});
     }
@@ -59,10 +58,10 @@ router.post('/:id/location', async (req, res) => {
 
 router.delete('/:id/location', async (req, res) => {
     try {
-        req.params.id = validation.checkString(req.params.id);
-        req.query.name = validation.checkString(req.query.name);
-        req.query.lat = validation.checkNumber(req.query.lat);
-        req.query.lon = validation.checkNumber(req.query.lon);
+        req.params.id = validation.checkString(xss(req.params.id));
+        req.query.name = validation.checkString(xss(req.query.name));
+        req.query.lat = validation.checkNumber(xss(req.query.lat));
+        req.query.lon = validation.checkNumber(xss(req.query.lon));
     } catch (e) {
         return res.status(400).json({error: e});
     }
