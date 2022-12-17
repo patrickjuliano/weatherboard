@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const Home = ({ currentUserID }) => {
 	return (
 		<div>
-            <h1 sx={{ variant: 'h3' }}>Home</h1>
+            <h1>Home</h1>
 			<p>
 				Weatherboard is a web application that queries the OpenWeatherMap API to supply users with real-time and forecasted global weather data. It was developed via the MERN stack and implements various other technologies, including Firebase Authentication, Redis, Flask, and ImageMagick.
 			</p>

@@ -115,7 +115,7 @@ export default function LogIn({ setIsLoggedIn, setCurrentUserEmail, setCurrentUs
 					/>
 				</FormControl>
 				<Button 
-					label='Log In'
+					aria-label='Log In'
 					sx={{ backgroundColor: '#181818', '&:hover': { backgroundColor: 'black'}, }}
 					variant='contained' 
 					endIcon={<Login />}
@@ -126,13 +126,13 @@ export default function LogIn({ setIsLoggedIn, setCurrentUserEmail, setCurrentUs
 				</Button>
 				<div id='loginSignupTextContainer'>
 					<p>Not a member? <Link 
-							to="/Signup" 
+							to="/signup" 
 							id="loginSignupLink">
 								Sign up here <span id="loginSignupIcon"><PersonAdd /></span>
 						</Link>
 					</p>
 					<Button 
-						label='Log in with Google'
+						aria-label='Log in with Google'
 						sx={{ width: '50', color: 'black', backgroundColor: 'white', '&:hover': { backgroundColor: '#f2f2f2'}, }}
 						variant='contained'
 						startIcon={<Google />}
