@@ -1,5 +1,7 @@
 import React from 'react';
 import '../App.css';
+import axios from 'axios';
+import defaultProfile from '../images/default.png'
 import { checkString, checkMatchingStrings } from '../validation';
 import { Button, Box, OutlinedInput, InputLabel, FormControl, InputAdornment, IconButton, Modal } from '@mui/material';
 import { Visibility, VisibilityOff, DeleteForever, LockReset, Cancel } from '@mui/icons-material';
@@ -10,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Credentials({ setIsLoggedIn, currentUserEmail }) {
+export default function Credentials({ setIsLoggedIn, currentUserEmail, currentUserID }) {
     //modal handlers
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -24,10 +26,57 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail }) {
         showConfirmPassword: false,
 	});
 
+    const [ pfpLink, setPfpLink ] = React.useState('');
+    const [imgFile, setImgFile] = React.useState(null);
+
+    const id = checkString(currentUserID);
+
     const navigate = useNavigate();
     const auth = getAuth();
 
     const user = auth.currentUser;
+
+    React.useEffect(() => {
+        async function fetchData() {
+			const id = checkString(currentUserID);
+			try {
+				const { data } = await axios.get(`http://localhost:4000/account/pfpmain/${id}`);
+                if (data === null || data === '') {
+                    setPfpLink(defaultProfile);
+                } else {
+                    setPfpLink('data:image/;base64,'+data);
+                }
+			} catch (e) {
+                console.log(e);
+            }
+		}
+		fetchData();
+    }, []);
+
+    const handleImgSubmitChange = async (event) => {
+        setImgFile(event.target.files[0]);
+    }
+
+    const handleSubmitImg = async (event) => {
+        event.preventDefault();
+        if(imgFile !== null){
+            if (imgFile.size>8388608){
+                toast.error("Please keep the image smaller than 8MB!")
+                setImgFile(null);
+            } else {
+                const form = new FormData();
+                form.append('img', imgFile);
+                try {
+                    toast.success('Image uploading! Just give us a minute to process it. Refresh the page in a bit to see the changes :)');
+                    await axios.post(`http://localhost:4000/account/${id}/profilepicture`, form);
+                } catch (e) {
+                    toast.error('Error uploading and processing image');
+                }
+            }
+        } else {
+            toast.error("Please choose a file!");
+        }
+    }
 
 	const handleChange = (prop) => (event) => {
 		setData({ ...data, [prop]: event.target.value });
@@ -88,17 +137,38 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail }) {
 		event.preventDefault();
 	}
 
-    if(user.providerData[0].providerId == 'google.com'){
+    if(user.providerData[0].providerId === 'google.com'){
         return (
             <div>
-            <h1>Credentials</h1>
+            <h1>Account Details</h1>
 			<Box 
 				sx={{
 					width: 350,
 					height: 500,
 				}}
 			>
-				<h2>Account Email: <span className="smallText">&nbsp;&nbsp;&nbsp;{currentUserEmail}</span></h2>
+                <h2>Account Email: <span className="smallText">&nbsp;&nbsp;&nbsp;{currentUserEmail}</span></h2>
+                <h2>Profile Picture: </h2>
+                <img src={pfpLink} referrerPolicy="no-referrer" alt="Profile Pic" />
+                <form>
+                    <label htmlFor='imgFile'>Upload New Picture File:</label>
+                    <input 
+                        type="file" 
+                        id='imgFile'
+                        defaultValue={imgFile}
+                        accept="image/png, image/jpeg, image/jpg" 
+                        onChange={handleImgSubmitChange}
+                    />
+                    <p>Only 'png' and 'jpeg'/'jpg' images accepted</p>
+                    <Button
+                        label='submit profile photo'
+                        sx={{ backgroundColor: '#181818', '&:hover': { backgroundColor: 'black'}, }}
+                        variant='contained' 
+                        onClick={handleSubmitImg}
+                        id="loginSignupDeleteButton">
+                            Upload new photo
+                    </Button>
+                </form>
                 <h2>Update Password: </h2>
                 <p>Accounts logged in through google cannot change password</p>
                 <Button 
@@ -158,14 +228,35 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail }) {
     } else {
         return (
             <div>
-            <h1>Credentials</h1>
+            <h1>Account Details</h1>
 			<Box 
 				sx={{
 					width: 350,
 					height: 500,
 				}}
 			>
-				<h2>Account Email: <span className="smallText">&nbsp;&nbsp;&nbsp;{currentUserEmail}</span></h2>
+                <h2>Account Email: <span className="smallText">&nbsp;&nbsp;&nbsp;{currentUserEmail}</span></h2>
+                <h2>Profile Picture: </h2>
+                <img src={pfpLink} referrerPolicy="no-referrer" alt="Profile Pic" />
+                <form>
+                    <label htmlFor='imgFile'>Upload New Picture File:</label>
+                    <input 
+                        type="file" 
+                        id='imgFile'
+                        defaultValue={imgFile}
+                        accept="image/png, image/jpeg, image/jpg" 
+                        onChange={handleImgSubmitChange}
+                    />
+                    <p>Only 'png' and 'jpeg'/'jpg' images accepted</p>
+                    <Button
+                        label='submit profile photo'
+                        sx={{ backgroundColor: '#181818', '&:hover': { backgroundColor: 'black'}, }}
+                        variant='contained' 
+                        onClick={handleSubmitImg}
+                        id="loginSignupDeleteButton">
+                            Upload new photo
+                    </Button>
+                </form>
                 <h2>Change Password: </h2>
 				<FormControl variant='outlined' id='loginSignupPasswordContainer'>
 					<InputLabel htmlFor='newPassword'>New Password</InputLabel>

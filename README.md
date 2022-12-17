@@ -1,22 +1,31 @@
 # final-project-cs554
+
 Weatherboard is a web application that queries the OpenWeatherMap API to supply users with real-time global weather data. Users can follow locations to receive real-time weather data and forecasts, as well as historical statistics. Weatherboard offers a highly streamlined interface that allows users to keep up with the weather data that matters to them.
 
+### Prerequisites
+
+Install the Imagemagick distribution to your pc (neccessary for our backend image processing)
+
+- Follow instructions here: https://imagemagick.org/script/download.php
 
 ### How to start the flask server
+
 If you have python, pip, and pipenv installed already skip down to steps to run. Otherwise use the pre-steps.
 
-pre-steps: 
-1. install python >= 3.7, check which verision using ```python --version```
-2. check if pip installed with: ```python -m pip --version``` or ```pip --version``` if not installed use: https://pip.pypa.io/en/stable/installation/ 
-3. check if pipenv is installed ```pipenv --version``` if not installed https://pipenv-fork.readthedocs.io/en/latest/install.html 
+pre-steps:
+
+1. install python >= 3.7, check which verision using `python --version`
+2. check if pip installed with: `python -m pip --version` or `pip --version` if not installed use: https://pip.pypa.io/en/stable/installation/
+3. check if pipenv is installed `pipenv --version` if not installed https://pipenv-fork.readthedocs.io/en/latest/install.html
 
 steps to run:
-1. cd into the flask server direction 
-2. run ```pipenv install``` (install dependencies)
-3. run ```pipenv shell``` (activate virtual env)
-4. to start the server first make the ./run.sh file executable by running ```chmod +x run.sh``` in terminal (mac) and then run ```./run.sh``` to start the server, server is on: http://127.0.0.1:8000/ . Alternatively you can run ```gunicorn my_app.wsgi:app``` to start the server.
 
-To run jupyter notebook (to see model nb): 
+1. cd into the flask server direction
+2. run `pipenv install` (install dependencies)
+3. run `pipenv shell` (activate virtual env)
+4. to start the server first make the ./run.sh file executable by running `chmod +x run.sh` in terminal (mac) and then run `./run.sh` to start the server, server is on: http://127.0.0.1:8000/ . Alternatively you can run `gunicorn my_app.wsgi:app` to start the server.
+
+To run jupyter notebook (to see model nb):
+
 - prestep: install jupyter nb https://jupyter.org/install
 - cd into flask_server folder and run: jupyter notebok
- 

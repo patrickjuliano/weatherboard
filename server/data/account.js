@@ -4,6 +4,10 @@ const locationLibrary = require('./location');
 const validation = require('../validation');
 const { ObjectId } = require('mongodb');
 
+const im = require('imagemagick');
+const fs = require('fs/promises');
+const p = require('path');
+
 async function getUser(id) {
     id = validation.checkString(id);
 
@@ -104,10 +108,105 @@ async function removeLocation(userId, name, lat, lon) {
     return user;
 }
 
+async function getPfpIcon(userId) {
+    userId = validation.checkString(userId);
+    const userCollection = await users();
+    const user = await userCollection.findOne({ _id: userId });
+    if (user === null) throw 'No user with that id';
+    if (user.pfpIcon === null) return null;
+    return user.pfpIcon;
+}
+
+async function getPfpMain(userId) {
+    userId = validation.checkString(userId);
+    const userCollection = await users();
+    const user = await userCollection.findOne({ _id: userId });
+    if (user === null) throw 'No user with that id';
+    if (user.pfpMain === null) return null;
+    return user.pfpMain;
+}
+
+async function formatAndSetImage(file, userId) {
+    userId = validation.checkString(userId);
+    const userCollection = await users();
+
+    let width = 0;
+    let height = 0;
+    let cropSize = 0;
+    let path = process.cwd() + '/imgTemp/';
+
+    await fs.writeFile(path+file.name, file.data, (err) => {
+        if (err) throw err;
+    });
+
+    im.identify(path + file.name, function(err, features){
+        if (err) throw err;
+        if (features.width === 0 || features.height === 0) throw 'Image incompatible';
+        width = features.width;
+        height = features.height;
+        im.convert([path + file.name, path + userId + 'temp.png'], function(err, stdout){
+            if (err) throw err;
+            if (width < height){
+                cropSize = width;
+            } else { cropSize = height; }
+            im.crop({
+                srcPath: path + userId + 'temp.png',
+                dstPath: path + userId + 'cropped.png',
+                width: cropSize,
+                height: cropSize,
+                quality: 1,
+                gravity: "Center"
+            }, function(err, result){
+                if (err) throw err;
+                im.resize({
+                    srcPath: path + userId + 'cropped.png',
+                    dstPath: path + userId + 'pfpIcon.png',
+                    width: 24,
+                    height: 24
+                }, async function(err, result){
+                    if (err) throw err;
+                    try {
+                        let icon = await fs.readFile(path + userId + 'pfpIcon.png');
+                        const updateInfo1 = await userCollection.updateOne({ _id: userId }, { $unset: { pfpIcon: "" } });
+                        if (!updateInfo1.matchedCount && !updateInfo1.modifiedCount) throw 'Could not add profile picture (icon)';
+                        const updateInfo2 = await userCollection.updateOne({ _id: userId }, { $addToSet: { pfpIcon: icon } });
+                        if (!updateInfo2.matchedCount && !updateInfo2.modifiedCount) throw 'Could not add profile picture (icon)';
+                    } catch (e){
+                        throw e;
+                    }
+                });
+                im.resize({
+                    srcPath: path + userId + 'cropped.png',
+                    dstPath: path + userId + 'pfpMain.png',
+                    width: 90,
+                    height: 90
+                }, async function(err, result){
+                    if (err) throw err;
+                    try {
+                        let main = await fs.readFile(path + userId + 'pfpMain.png');
+                        const updateInfo1 = await userCollection.updateOne({ _id: userId }, { $unset: { pfpMain: "" } });
+                        if (!updateInfo1.matchedCount && !updateInfo1.modifiedCount) throw 'Could not add profile picture (main)';
+                        const updateInfo2 = await userCollection.updateOne({ _id: userId }, { $addToSet: { pfpMain: main } });
+                        if (!updateInfo2.matchedCount && !updateInfo2.modifiedCount) throw 'Could not add profile picture (main)';
+                        for (const file of await fs.readdir(path)) {
+                            await fs.unlink(p.join(path, file));
+                        }
+                    } catch (e){
+                        throw e;
+                    }
+                });
+            });
+        });
+    });
+}
+
 module.exports = {
     getUser,
     createUser,
     getSavedLocations,
     addLocation,
-    removeLocation
+    removeLocation,
+    formatAndSetImage,
+    getPfpIcon,
+    getPfpMain
 }

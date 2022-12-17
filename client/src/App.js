@@ -12,6 +12,7 @@ import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
 import Error from './components/Error';
 import Credentials from './components/Credentials';
+import ProfilePic from './components/ProfilePic';
 import { AppBar, Box, CssBaseline, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Tab, Tabs, Toolbar, Typography } from '@mui/material';
 
 import MoonLoader from 'react-spinners/MoonLoader'
@@ -92,8 +93,8 @@ function App() {
     });
     sidebarTabs.push({
       route: "/credentials",
-      label: "Credentials",
-      icon: <RiEdit2Fill />
+      label: "Account",
+      icon: <ProfilePic currentUserID={currentUserID} />
     });
     sidebarTabs.push({
       route: '/login',
@@ -190,7 +191,7 @@ function App() {
 
                 <Route path='/login' element={currentUserID ? <Navigate replace to='/' /> : <LogIn setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} setCurrentUserID={setCurrentUserID} />} />
                 <Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} setCurrentUserID={setCurrentUserID} />} />
-                <Route path='/credentials' element={!currentUserID ? <Navigate replace to='/login' /> : <Credentials setIsLoggedIn={setIsLoggedIn} currentUserEmail={currentUserEmail} />} /> 
+                <Route path='/credentials' element={!currentUserID ? <Navigate replace to='/login' /> : <Credentials setIsLoggedIn={setIsLoggedIn} currentUserEmail={currentUserEmail} currentUserID={currentUserID} />} /> 
 
                 <Route path='/error' element={<Error />} />
                 <Route path='*' element={<Navigate to={'/error'} replace />} />

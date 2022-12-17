@@ -165,8 +165,9 @@ h2 {
 
 #deleteButton {
   width: 50%;
-  margin-top: 10vh;
+  margin-top: 5vh;
   margin-left: 25%;
+  margin-bottom: 5vh;
 }
 
 .modalButton {

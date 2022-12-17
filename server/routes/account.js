@@ -21,8 +21,6 @@ router.get('/:id', async (req, res) => {
 router.post('/:id', async (req, res) => {
     try {
         req.params.id = validation.checkString(req.params.id);
-        console.log(2);
-
     } catch (e) {
         return res.status(400).json({error: e});
     }
@@ -71,6 +69,47 @@ router.delete('/:id/location', async (req, res) => {
         return res.status(200).json(data);
     } catch (e) {
         return res.status(404).json({error: e}); // TODO: Status?
+    }
+});
+
+router.get('/pfpicon/:id', async (req, res) => {
+    try {
+        req.params.id = validation.checkString(req.params.id);
+    } catch (e) {
+        return res.status(400).json({error: e});
+    }
+    try {
+        const data = await accountData.getPfpIcon(req.params.id);
+        return res.status(200).json(data);
+    } catch (e) {
+        return res.status(404).json({error: e});
+    }
+});
+
+router.get('/pfpmain/:id', async (req, res) => {
+    try {
+        req.params.id = validation.checkString(req.params.id);
+    } catch (e) {
+        return res.status(400).json({error: e});
+    }
+    try {
+        const data = await accountData.getPfpMain(req.params.id);
+        return res.status(200).json(data);
+    } catch (e) {
+        return res.status(404).json({error: e});
+    }
+});
+
+router.post('/:id/profilepicture', async (req, res) => {
+    try {
+        req.params.id = validation.checkString(req.params.id);
+    } catch (e) {
+        return res.status(400).json({error: e});
+    }
+    try {
+        await accountData.formatAndSetImage(req.files.img, req.params.id);
+    } catch (e) {
+        return res.status(500).json({error: e});
     }
 });
 
