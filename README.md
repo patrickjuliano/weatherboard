@@ -14,7 +14,7 @@ If you have python, pip, and pipenv installed already skip down to steps to run.
 
 pre-steps:
 
-1. install python >= 3.7, check which verision using `python --version`
+1. install python >= 3.10, check which verision using `python --version`
 2. check if pip installed with: `python -m pip --version` or `pip --version` if not installed use: https://pip.pypa.io/en/stable/installation/
 3. check if pipenv is installed `pipenv --version` if not installed https://pipenv-fork.readthedocs.io/en/latest/install.html
 
