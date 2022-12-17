@@ -41,10 +41,14 @@ def hello_world(city=None, periods=None):
     day_adder = set_periods(date(date_split[0], date_split[1], date_split[2])).days
     future = m.make_future_dataframe(periods=int(periods)+day_adder) 
     forecast = m.predict(future)
+    forecast['city'] = city
     mask = (forecast['ds'] > today) & (forecast['ds'] <= (datetime.now() + timedelta(days=int(periods))).strftime('%Y-%m-%d')) 
-    df = forecast.loc[mask][['ds','yhat']]
+    df = forecast.loc[mask][['city','ds','yhat']]
     df.ds = df.ds.dt.strftime('%Y-%m-%d')
-    return Response(df.to_json(orient="records"), mimetype='application/json')
+    df_json = df.to_json(orient="records") 
+    return Response(
+        df_json, mimetype='application/json'
+    )
 
   
 
