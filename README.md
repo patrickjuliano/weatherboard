@@ -30,3 +30,7 @@ To run jupyter notebooks (to see model nb):
 * Not necessary to run application, but model would be trained on monthly basis through these notebooks
 - prestep: install jupyter nb https://jupyter.org/install
 - cd into flask_server folder and run: jupyter notebok
+
+### Weather Prediction Service 
+
+The weather prediction service runs off a flask server using facebook prophet time series prediction engine. Prediction limits are 30 days from current day, and data is re-trained each month to keep the forecast accurate/reduce model drift. 
