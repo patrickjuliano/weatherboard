@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const xss = require('xss');
 const flat = require('flat');
 const unflatten = flat.unflatten;
 const data = require('../data');
@@ -10,8 +11,8 @@ const validation = require('../validation');
 // Requires numerical values for the query parameters lat and lon
 router.get('/current', async (req, res) => {
     try {
-        req.query.lat = validation.checkNumber(req.query.lat);
-        req.query.lon = validation.checkNumber(req.query.lon);
+        req.query.lat = validation.checkNumber(xss(req.query.lat));
+        req.query.lon = validation.checkNumber(xss(req.query.lon));
     } catch (e) {
         return res.status(400).json({error: e});
     }
@@ -26,8 +27,8 @@ router.get('/current', async (req, res) => {
 // Requires numerical values for the query parameters lat and lon
 router.get('/minutely', async (req, res) => {
     try {
-        req.query.lat = validation.checkNumber(req.query.lat);
-        req.query.lon = validation.checkNumber(req.query.lon);
+        req.query.lat = validation.checkNumber(xss(req.query.lat));
+        req.query.lon = validation.checkNumber(xss(req.query.lon));
     } catch (e) {
         return res.status(400).json({error: e});
     }
@@ -42,8 +43,8 @@ router.get('/minutely', async (req, res) => {
 // Requires numerical values for the query parameters lat and lon
 router.get('/hourly', async (req, res) => {
     try {
-        req.query.lat = validation.checkNumber(req.query.lat);
-        req.query.lon = validation.checkNumber(req.query.lon);
+        req.query.lat = validation.checkNumber(xss(req.query.lat));
+        req.query.lon = validation.checkNumber(xss(req.query.lon));
     } catch (e) {
         return res.status(400).json({error: e});
     }
@@ -58,8 +59,8 @@ router.get('/hourly', async (req, res) => {
 // Requires numerical values for the query parameters lat and lon
 router.get('/daily', async (req, res) => {
     try {
-        req.query.lat = validation.checkNumber(req.query.lat);
-        req.query.lon = validation.checkNumber(req.query.lon);
+        req.query.lat = validation.checkNumber(xss(req.query.lat));
+        req.query.lon = validation.checkNumber(xss(req.query.lon));
     } catch (e) {
         return res.status(400).json({error: e});
     }
@@ -74,8 +75,8 @@ router.get('/daily', async (req, res) => {
 // Requires numerical values for the query parameters lat and lon
 router.get('/alerts', async (req, res) => {
     try {
-        req.query.lat = validation.checkNumber(req.query.lat);
-        req.query.lon = validation.checkNumber(req.query.lon);
+        req.query.lat = validation.checkNumber(xss(req.query.lat));
+        req.query.lon = validation.checkNumber(xss(req.query.lon));
     } catch (e) {
         return res.status(400).json({error: e});
     }
@@ -90,8 +91,8 @@ router.get('/alerts', async (req, res) => {
 // Requires numerical values for the query parameters lat and lon
 router.get('/historical', async (req, res) => {
     try {
-        req.query.lat = validation.checkNumber(req.query.lat);
-        req.query.lon = validation.checkNumber(req.query.lon);
+        req.query.lat = validation.checkNumber(xss(req.query.lat));
+        req.query.lon = validation.checkNumber(xss(req.query.lon));
     } catch (e) {
         return res.status(400).json({error: e});
     }

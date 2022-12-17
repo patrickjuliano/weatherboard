@@ -172,7 +172,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail, currentUs
                 <h2>Update Password: </h2>
                 <p>Accounts logged in through google cannot change password</p>
                 <Button 
-					label='Delete user'
+					aria-label='Delete user'
 					color='error'
 					variant='contained' 
 					endIcon={<DeleteForever />}
@@ -184,8 +184,8 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail, currentUs
                 <Modal
                     open={open}
                     onClose={handleClose}
-                    aria-labelledby="Delete user confimation modal"
-                    aria-describedby="This action can not be undone"
+                    aria-label="Delete user confimation modal"
+                    aria-description="This action can not be undone"
                     >
                     <Box sx={{
                       position: 'absolute',
@@ -201,7 +201,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail, currentUs
                         <h2>Are you sure you want to delete your account?</h2>
                         <p>This action cannot be undone</p>
                         <Button 
-                            label='cancel delete user'
+                            aria-label='cancel delete user'
                             sx={{ backgroundColor: '#181818', '&:hover': { backgroundColor: 'black'}, }}
                             variant='contained' 
                             endIcon={<Cancel />}
@@ -211,7 +211,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail, currentUs
                                 Cancel
                         </Button>
                         <Button 
-                            label='Delete user'
+                            aria-label='Delete user'
                             color='error'
                             variant='contained' 
                             endIcon={<DeleteForever />}
@@ -261,7 +261,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail, currentUs
 				<FormControl variant='outlined' id='loginSignupPasswordContainer'>
 					<InputLabel htmlFor='newPassword'>New Password</InputLabel>
 					<OutlinedInput 
-						label = 'New Password'
+						aria-label = 'New Password'
 						id='newPassword'
 						type={data.showPassword ? 'text' : 'password'}
 						value={data.password}
@@ -283,7 +283,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail, currentUs
 				<FormControl variant='outlined' id='signupConfirmPasswordContainer'>
 					<InputLabel htmlFor='newConfirmPassword'>Confirm New Password</InputLabel>
 					<OutlinedInput 
-						label = 'Confirm New Password'
+						aria-label = 'Confirm New Password'
 						id='newConfirmPassword' 
 						type={data.showConfirmPassword ? 'text' : 'password'}
 						value={data.confirmPassword}
@@ -303,7 +303,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail, currentUs
 					/>
 				</FormControl>
                 <Button
-                    label='update password'
+                    aria-label='update password'
 					sx={{ backgroundColor: '#181818', '&:hover': { backgroundColor: 'black'}, }}
 					variant='contained' 
 					endIcon={<LockReset />}
@@ -313,7 +313,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail, currentUs
 						Update Password
                 </Button>
                 <Button 
-					label='Delete user'
+					aria-label='Delete user'
                     color='error'
 					variant='contained' 
 					endIcon={<DeleteForever />}
@@ -325,8 +325,8 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail, currentUs
                 <Modal
                     open={open}
                     onClose={handleClose}
-                    aria-labelledby="Delete user confimation modal"
-                    aria-describedby="This action can not be undone"
+                    aria-label="Delete user confimation modal"
+                    aria-description="This action can not be undone"
                     >
                     <Box sx={{
                       position: 'absolute',
@@ -342,7 +342,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail, currentUs
                         <h2>Are you sure you want to delete your account?</h2>
                         <p>This action cannot be undone</p>
                         <Button 
-                            label='cancel delete user'
+                            aria-label='cancel delete user'
                             sx={{ backgroundColor: '#181818', '&:hover': { backgroundColor: 'black'}, }}
                             variant='contained' 
                             endIcon={<Cancel />}
@@ -352,7 +352,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail, currentUs
                                 Cancel
                         </Button>
                         <Button 
-                            label='Delete user'
+                            aria-label='Delete user'
                             color='error'
                             variant='contained' 
                             endIcon={<DeleteForever />}

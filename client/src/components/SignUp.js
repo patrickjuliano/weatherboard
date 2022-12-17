@@ -152,7 +152,7 @@ export default function SignUp({ setIsLoggedIn, setCurrentUserEmail, setCurrentU
 					/>
 				</FormControl>
 				<Button 
-					label='Sign up'
+					aria-label='Sign up'
 					sx={{ backgroundColor: '#181818', '&:hover': { backgroundColor: 'black'}, }}
 					variant='contained' 
 					endIcon={<PersonAdd />}
@@ -169,7 +169,7 @@ export default function SignUp({ setIsLoggedIn, setCurrentUserEmail, setCurrentU
 						</Link>
 					</p>
 					<Button 
-						label='Log in with Google'
+						aria-label='Sign up with Google'
 						sx={{ width: '50', color: 'black', backgroundColor: 'white', '&:hover': { backgroundColor: '#f2f2f2'}, }}
 						variant='contained'
 						startIcon={<Google />}

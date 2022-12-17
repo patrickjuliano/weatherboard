@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import '../App.css';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import { Autocomplete, Collapse, Divider, List, ListItem, ListItemButton, ListItemText, ListItemIcon, ListSubheader, TextField, Icon, Tooltip, Tabs, Tab, Card, CardContent, Typography, CardHeader, CardActions, IconButton, Button, Alert } from '@mui/material';
 import { WiDaySunny, WiDaySunnyOvercast, WiNightClear, WiNightAltPartlyCloudy, WiCloud, WiCloudy, WiShowers, WiRain, WiThunderstorm, WiSnowflakeCold, WiDust, WiBarometer, WiThermometer, WiHumidity, WiStrongWind, WiCloudyGusts, WiDirectionRight, WiRaindrop, WiWindy, WiWindDeg, WiSprinkle, WiSnow, WiStormWarning, WiSunrise, WiSunset, WiMoonrise, WiMoonset, WiMoonFull, WiMoonNew, WiMoonWaningCrescent1, WiMoonFirstQuarter, WiMoonWaxingGibbous1, WiMoonWaningGibbous1, WiMoonThirdQuarter, WiMoonWaxingCrescent1, WiMoonAltWaxingCrescent1, WiMoonAltWaxingGibbous1, WiMoonAltWaningGibbous1, WiMoonAltWaningCrescent1, WiMoonAltThirdQuarter, WiMoonAltFull, WiMoonAltFirstQuarter, WiMoonAltNew, WiMoonAltWaxingCrescent3, WiMoonAltWaxingGibbous3, WiMoonAltWaningGibbous3, WiMoonAltWaningCrescent3 } from 'react-icons/wi';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
@@ -9,26 +10,31 @@ import { checkNumber, checkString } from '../validation';
 import { Box } from '@mui/system';
 import { Link } from 'react-router-dom';
 
-const weatherIcons = {
-	'01': {
-		'd': <WiDaySunny />,
-		'n': <WiNightClear />
-	},
-	'02': {
-		'd': <WiDaySunnyOvercast />,
-		'n': <WiNightAltPartlyCloudy />
-	},
-	'03': <WiCloud />,
-	'04': <WiCloudy />,
-	'09': <WiShowers />,
-	'10': <WiRain />,
-	'11': <WiThunderstorm />,
-	'13': <WiSnowflakeCold />,
-	'50': <WiDust />
+// Generate random id
+function randomId() {
+	return `id-${uuidv4()}`;
 }
 
 // Codes consist of two digits followed by a letter ('d' for day, 'n' for night)
 function getWeatherIcon(code) {
+	const weatherIcons = {
+		'01': {
+			'd': <WiDaySunny id={randomId()} />,
+			'n': <WiNightClear id={randomId()} />
+		},
+		'02': {
+			'd': <WiDaySunnyOvercast id={randomId()} />,
+			'n': <WiNightAltPartlyCloudy id={randomId()} />
+		},
+		'03': <WiCloud id={randomId()} />,
+		'04': <WiCloudy id={randomId()} />,
+		'09': <WiShowers id={randomId()} />,
+		'10': <WiRain id={randomId()} />,
+		'11': <WiThunderstorm id={randomId()} />,
+		'13': <WiSnowflakeCold id={randomId()} />,
+		'50': <WiDust id={randomId()} />
+	}
+
 	let icon = weatherIcons[code.slice(0, 2)];
 	if ('d' in icon && 'n' in icon) icon = icon[code.slice(-1)];
 	return icon;
@@ -151,21 +157,21 @@ const CurrentWeather = ({ currentUserID }) => {
 	// Get moon phase based on number between 0 and 1
 	function getMoonPhase(value) {
 		if (value === 0 || value === 1) {
-			return { name: 'New Moon', icon: <WiMoonAltNew /> };
+			return { name: 'New Moon', icon: <WiMoonAltNew id={randomId()} /> };
 		} else if (value < .25) {
-			return { name: 'Waxing Crescent', icon: <WiMoonAltWaxingCrescent3 /> };
+			return { name: 'Waxing Crescent', icon: <WiMoonAltWaxingCrescent3 id={randomId()} /> };
 		} else if (value === .25) {
-			return { name: 'First Quarter Moon', icon: <WiMoonAltFirstQuarter /> };
+			return { name: 'First Quarter Moon', icon: <WiMoonAltFirstQuarter id={randomId()} /> };
 		} else if (value < .5) {
-			return { name: 'Waxing Gibbous', icon: <WiMoonAltWaxingGibbous3 /> };
+			return { name: 'Waxing Gibbous', icon: <WiMoonAltWaxingGibbous3 id={randomId()} /> };
 		} else if (value === .5) {
-			return { name: 'Full Moon', icon: <WiMoonAltFull /> };
+			return { name: 'Full Moon', icon: <WiMoonAltFull id={randomId()} /> };
 		} else if (value < .75) {
-			return { name: 'Waning Gibbous', icon: <WiMoonAltWaningGibbous3 /> };
+			return { name: 'Waning Gibbous', icon: <WiMoonAltWaningGibbous3 id={randomId()} /> };
 		} else if (value === .75) {
-			return { name: 'Third Quarter Moon', icon: <WiMoonAltThirdQuarter /> };
+			return { name: 'Third Quarter Moon', icon: <WiMoonAltThirdQuarter id={randomId()} /> };
 		} else {
-			return { name: 'Waning Crescent', icon: <WiMoonAltWaningCrescent3 /> };
+			return { name: 'Waning Crescent', icon: <WiMoonAltWaningCrescent3 id={randomId()} /> };
 		}
 	}
 
@@ -187,13 +193,13 @@ const CurrentWeather = ({ currentUserID }) => {
 		const index = current ? 0 : tabIndex;
 			if (index !== 1) {
 				return (
-					<IconContext.Provider value={{className: 'nestedListIcon', color: '#757575', size: 30 }}>
+					<IconContext.Provider value={{ className: 'nestedListIcon', color: '#757575', size: 30 }}>
 						<List component='div' sx={{ maxWidth: 340 }}>
 							{'sunrise' in data &&
 								createAttribute(
 									current,
 									'Time of sunrise',
-									<WiSunrise />,
+									<WiSunrise id={randomId()} />,
 									'Sunrise',
 									(new Date(data.sunrise * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true })
 								)
@@ -202,7 +208,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Time of sunset',
-									<WiSunset />,
+									<WiSunset id={randomId()} />,
 									'Sunset',
 									(new Date(data.sunset * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true })
 								)
@@ -211,7 +217,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Temperature accounting for the human perception of weather',
-									<WiThermometer />,
+									<WiThermometer id={randomId()} />,
 									'Feels Like',
 									data.feels_like,
 									'ºF',
@@ -222,7 +228,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Atmospheric pressure on the sea level',
-									<WiBarometer />,
+									<WiBarometer id={randomId()} />,
 									'Pressure',
 									data.pressure,
 									'hPa',
@@ -233,7 +239,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Amount of water vapor in the air',
-									<WiHumidity />,
+									<WiHumidity id={randomId()} />,
 									'Humidity',
 									data.humidity,
 									'%'
@@ -243,7 +249,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Atmospheric temperature (varying according to pressure and humidity) below which water droplets begin to condense and dew can form',
-									<WiRaindrop />,
+									<WiRaindrop id={randomId()} />,
 									'Dew Point',
 									data.dew_point,
 									'ºF',
@@ -254,7 +260,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Strength of ultraviolet radiation',
-									<WiDaySunny />,
+									<WiDaySunny id={randomId()} />,
 									'UV Index',
 									data.uvi
 								)
@@ -263,7 +269,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Measure of cloudiness',
-									<WiCloud />,
+									<WiCloud id={randomId()} />,
 									'Clouds',
 									data.clouds,
 									'%'
@@ -273,7 +279,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Average visibility (capped at 10 km)',
-									<WiDust />,
+									<WiDust id={randomId()} />,
 									'Visibility',
 									data.visibility,
 									'm',
@@ -284,7 +290,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Speed at which wind travels',
-									<WiWindy />,
+									<WiWindy id={randomId()} />,
 									'Wind Speed',
 									data.wind_speed,
 									'mph',
@@ -295,7 +301,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Peak wind speed',
-									<WiCloudyGusts />,
+									<WiCloudyGusts id={randomId()} />,
 									'Wind Gust',
 									data.wind_gust,
 									'mph',
@@ -306,7 +312,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Direction from which wind travels',
-									<WiWindDeg />,
+									<WiWindDeg id={randomId()} />,
 									'Wind Direction',
 									data.wind_deg,
 									'º'
@@ -316,7 +322,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Probability of precipitation',
-									<WiSprinkle />,
+									<WiSprinkle id={randomId()} />,
 									'Precipiation',
 									data.pop * 10,
 									'%'
@@ -326,7 +332,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Rain volume',
-									<WiRain />,
+									<WiRain id={randomId()} />,
 									'Rain',
 									data.rain['1h'],
 									'mm',
@@ -337,7 +343,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Snow volume',
-									<WiSnow />,
+									<WiSnow id={randomId()} />,
 									'Snow',
 									data.snow['1h'],
 									'mm',
@@ -348,7 +354,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Weather condition',
-									<WiStormWarning />,
+									<WiStormWarning id={randomId()} />,
 									'Weather',
 									data.weather[0].main
 								)
@@ -358,13 +364,13 @@ const CurrentWeather = ({ currentUserID }) => {
 				);
 			} else {
 				return (
-					<IconContext.Provider value={{className: 'nestedListIcon', color: '#757575', size: 30 }}>
+					<IconContext.Provider value={{ className: 'nestedListIcon', color: '#757575', size: 30 }}>
 						<List component='div'>
 							{'sunrise' in data &&
 								createAttribute(
 									current,
 									'Time of sunrise',
-									<WiSunrise />,
+									<WiSunrise id={randomId()} />,
 									'Sunrise',
 									(new Date(data.sunrise * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true })
 								)
@@ -373,7 +379,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Time of sunset',
-									<WiSunset />,
+									<WiSunset id={randomId()} />,
 									'Sunset',
 									(new Date(data.sunset * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true })
 								)
@@ -382,7 +388,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Time of moonrise',
-									<WiMoonrise />,
+									<WiMoonrise id={randomId()} />,
 									'Moonrise',
 									(new Date(data.moonrise * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true })
 								)
@@ -391,7 +397,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Time of moonset',
-									<WiMoonset />,
+									<WiMoonset id={randomId()} />,
 									'Moonset',
 									(new Date(data.moonset * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true })
 								)
@@ -409,7 +415,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Minimum daily temperature',
-									<WiThermometer />,
+									<WiThermometer id={randomId()} />,
 									'Low Temperature',
 									data.temp.min,
 									'ºF',
@@ -420,7 +426,7 @@ const CurrentWeather = ({ currentUserID }) => {
 								createAttribute(
 									current,
 									'Maximum daily temperature',
-									<WiThermometer />,
+									<WiThermometer id={randomId()} />,
 									'High Temperature',
 									data.temp.max,
 									'ºF',
@@ -459,28 +465,28 @@ const CurrentWeather = ({ currentUserID }) => {
 			<div>
 				{
 					weatherData &&
-						<IconContext.Provider value={{size: 50}}>
-							<List subheader={<ListSubheader>{header}</ListSubheader>} sx={{ width: '100%', maxWidth: 340, bgcolor: 'background.paper' }}>
-								{weatherData.slice(0, end == -1 ? weatherData.length : end).map((data, index) => (
-									<div>
-										<ListItemButton divider onClick={() => handleClick(index)}>
-											<ListItemIcon>
+						<List subheader={<ListSubheader>{header}</ListSubheader>} sx={{ width: '100%', maxWidth: 340, bgcolor: 'background.paper' }}>
+							{weatherData.slice(0, end == -1 ? weatherData.length : end).map((data, index) => (
+								<li>
+									<ListItemButton divider onClick={() => handleClick(index)}>
+										<ListItemIcon>
+											<IconContext.Provider value={{size: 50}}>
 												{getWeatherIcon(data.weather[0].icon)}
-											</ListItemIcon>
-											{tabIndex === 2 ?
-												<ListItemText primary={Math.round(data.temp) + ' ºF'} secondary={`${new Date(data.dt * 1000).toLocaleString('en-US', { weekday: 'long' })}, ${(new Date(data.dt * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true })}`} />
-											:
-												<ListItemText primary={tabIndex === 0 ? Math.round(data.temp) + ' ºF' : `${Math.round(data.temp.min)}ºF-${Math.round(data.temp.max)}ºF`} secondary={data.dt === current ? (tabIndex === 0 ? 'Now' : 'Today') : (tabIndex === 0 ? (new Date(data.dt * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true }) : new Date(data.dt * 1000)).toLocaleString('en-US', { weekday: 'long' })} />
-											}
-											{open[index] ? <ExpandLess /> : <ExpandMore />}
-										</ListItemButton>
-										<Collapse in={open[index]} timeout='auto' unmountOnExit>
-											{createAttributeList(data)}
-										</Collapse>
-									</div>
-								))}
-							</List>
-						</IconContext.Provider>
+											</IconContext.Provider>
+										</ListItemIcon>
+										{tabIndex === 2 ?
+											<ListItemText primary={Math.round(data.temp) + ' ºF'} secondary={`${new Date(data.dt * 1000).toLocaleString('en-US', { weekday: 'long' })}, ${(new Date(data.dt * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true })}`} />
+										:
+											<ListItemText primary={tabIndex === 0 ? Math.round(data.temp) + ' ºF' : `${Math.round(data.temp.min)}ºF-${Math.round(data.temp.max)}ºF`} secondary={data.dt === current ? (tabIndex === 0 ? 'Now' : 'Today') : (tabIndex === 0 ? (new Date(data.dt * 1000)).toLocaleString('en-US', { hour: 'numeric', hour12: true }) : new Date(data.dt * 1000)).toLocaleString('en-US', { weekday: 'long' })} />
+										}
+										{open[index] ? <ExpandLess /> : <ExpandMore />}
+									</ListItemButton>
+									<Collapse in={open[index]} timeout='auto' unmountOnExit>
+										{createAttributeList(data)}
+									</Collapse>
+								</li>
+							))}
+						</List>
 				}
 			</div>
 	}
@@ -508,7 +514,7 @@ const CurrentWeather = ({ currentUserID }) => {
 									getWeatherIcon(currentWeatherData.weather[0].icon)
 								}
 							</IconContext.Provider>
-							<Typography className='sideBySide' fontSize={50}>{'temp' in currentWeatherData ? Math.round(currentWeatherData.temp) : 'N/A'}<Typography className='superscript' fontSize={25} fontWeight={'bold'} sx={{ pl: 1 }}>ºF </Typography></Typography>
+							<Typography className='sideBySide' fontSize={50}>{'temp' in currentWeatherData ? `${Math.round(currentWeatherData.temp)}ºF` : 'N/A'}</Typography>
 						</CardContent>
 						<CardActions sx={{ pt: 0 }}>
 							<IconButton aria-label='expand' onClick={handleClickCurrent} sx={{ ml: 'auto' }}>
