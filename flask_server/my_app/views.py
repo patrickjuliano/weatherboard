@@ -31,6 +31,7 @@ def set_periods(cur_date):
 
 @app.route("/<city>/<periods>")
 def hello_world(city=None, periods=None):
+    periods = int(periods)
     if int(periods) > 30:
         return Response('Can only predict up to 30 days')
 
