@@ -13,6 +13,7 @@ import SignUp from './components/SignUp';
 import Error from './components/Error';
 import Credentials from './components/Credentials';
 import ProfilePic from './components/ProfilePic';
+import WeatherPredictionService from './components/WeatherPredictionService';
 import { AppBar, Box, CssBaseline, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Tab, Tabs, Toolbar, Typography } from '@mui/material';
 
 import MoonLoader from 'react-spinners/MoonLoader'
@@ -90,6 +91,11 @@ function App() {
       route: "/weather/current",
       label: "Forecast",
       icon: <RiShowersFill />
+    });
+    sidebarTabs.push({
+      route: "/weather/future",
+      label: "Weather Predictor",
+      icon: <RiHistoryFill />
     });
     sidebarTabs.push({
       route: "/credentials",
@@ -184,6 +190,8 @@ function App() {
                 <Route path='/' element={<Home currentUserID={currentUserID} />} />
 
                 <Route path='/weather/current' element={!currentUserID ? <Navigate replace to='/login' /> : <WeatherForecast currentUserID={currentUserID} />} />
+                <Route path='/weather/future' element={!currentUserID ? <Navigate replace to='/login' /> : <WeatherPredictionService currentUserID={currentUserID} />} />
+
                 {/* <Route path='/weather/forecast' element={<ForecastWeather />} />
                 <Route path='/weather/historical' element={<HistoricalWeather />} /> */}
 
@@ -192,7 +200,6 @@ function App() {
                 <Route path='/login' element={currentUserID ? <Navigate replace to='/' /> : <LogIn setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} setCurrentUserID={setCurrentUserID} />} />
                 <Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} setCurrentUserEmail={setCurrentUserEmail} setCurrentUserID={setCurrentUserID} />} />
                 <Route path='/credentials' element={!currentUserID ? <Navigate replace to='/login' /> : <Credentials setIsLoggedIn={setIsLoggedIn} currentUserEmail={currentUserEmail} currentUserID={currentUserID} />} /> 
-
                 <Route path='/error' element={<Error />} />
                 <Route path='*' element={<Navigate to={'/error'} replace />} />
               </Routes>
