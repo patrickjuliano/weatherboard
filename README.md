@@ -38,5 +38,5 @@ To run jupyter notebooks (to see model nb):
 The weather prediction service runs off a flask server using facebook prophet time series prediction engine. Prediction limits are 30 days from current day, and data is re-trained each month to keep the forecast accurate/reduce model drift.
 
 Historical weather data from Janurary 2018 was used to train the weather prediction model as seen in the screen shot below of Austin TX weather data:
-![Screenshot](austin_txt_data.png)
+![Screenshot](austin_tx_data.png)
 
