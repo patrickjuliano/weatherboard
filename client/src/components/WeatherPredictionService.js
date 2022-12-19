@@ -48,6 +48,7 @@ const WeatherPredictionService = ({ currentUserID }) => {
     return (
         <div>
             <h1>Weather Prediction</h1>
+            <p>The Weather Prediction Service is a custom model that predicts the weather up to 30 days from the current day using a time series machine learning model. Currently the prediction service supports five cities, which can be found in the drop down menu. Choose the number of days from the sliding bar found next to the city menu.</p>
             <div className="predictionForms">
                 <FormControl
                     variant="outlined"
@@ -63,8 +64,8 @@ const WeatherPredictionService = ({ currentUserID }) => {
                         onChange={(e) => setCity(e.target.value)}
                     >
                         <MenuItem value="Washington">Washington DC</MenuItem>
-                        <MenuItem value="NewYork">New York</MenuItem>
-                        <MenuItem value="SanFrancisco">San Francisco</MenuItem>
+                        <MenuItem value="New%20York">New York</MenuItem>
+                        <MenuItem value="San%20Francisco">San Francisco</MenuItem>
                         <MenuItem value="Miami">Miami</MenuItem>
                         <MenuItem value="Austin">Austin</MenuItem>
                     </Select>
@@ -96,7 +97,7 @@ const WeatherPredictionService = ({ currentUserID }) => {
                                 <TableRow key={row.ds}>
                                     <TableCell>{row.ds}</TableCell>
                                     <TableCell align="right">
-                                        {row.yhat}
+                                        {Math.round(row.yhat,2)}
                                     </TableCell>
                                 </TableRow>
                             ))}
