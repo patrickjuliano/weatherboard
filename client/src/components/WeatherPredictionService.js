@@ -48,14 +48,21 @@ const WeatherPredictionService = ({ currentUserID }) => {
     return (
         <div>
             <h1>Weather Prediction</h1>
-            <p>The Weather Prediction Service is a custom model that predicts the weather up to 30 days from the current day using a time series machine learning model. Currently the prediction service supports five cities, which can be found in the drop down menu. Choose the number of days from the sliding bar found next to the city menu.</p>
+            <p>
+                The Weather Prediction Service is a custom model that predicts
+                the weather up to 30 days from the current day using a time
+                series machine learning model. Currently the prediction service
+                supports five cities, which can be found in the drop down menu.
+                Choose the number of days from the sliding bar found next to the
+                city menu.
+            </p>
             <div className="predictionForms">
                 <FormControl
                     variant="outlined"
                     className="predict-select"
                     sx={{ ml: 5, mr: 5 }}
                 >
-                    <InputLabel id="city-select">City</InputLabel>
+                    <InputLabel id="city-select-label">City</InputLabel>
                     <Select
                         labelId="city-select"
                         id="city-select"
@@ -65,7 +72,9 @@ const WeatherPredictionService = ({ currentUserID }) => {
                     >
                         <MenuItem value="Washington">Washington DC</MenuItem>
                         <MenuItem value="New%20York">New York</MenuItem>
-                        <MenuItem value="San%20Francisco">San Francisco</MenuItem>
+                        <MenuItem value="San%20Francisco">
+                            San Francisco
+                        </MenuItem>
                         <MenuItem value="Miami">Miami</MenuItem>
                         <MenuItem value="Austin">Austin</MenuItem>
                     </Select>
@@ -97,7 +106,7 @@ const WeatherPredictionService = ({ currentUserID }) => {
                                 <TableRow key={row.ds}>
                                     <TableCell>{row.ds}</TableCell>
                                     <TableCell align="right">
-                                        {Math.round(row.yhat,2)}
+                                        {Math.round(row.yhat, 2)}
                                     </TableCell>
                                 </TableRow>
                             ))}
