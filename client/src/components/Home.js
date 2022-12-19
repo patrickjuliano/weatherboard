@@ -1,8 +1,25 @@
 import React from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { checkString } from '../validation';
 
-const Home = ({ currentUserID }) => {
+const Home = ({ currentUserID, isLoggedIn }) => {
+	React.useEffect(() => {
+		async function fetchData() {
+			//If a user is not entered into the Mongo database, this will check and create an entry if needed
+			if( isLoggedIn ){
+				const id = checkString(currentUserID);
+				try {
+					await axios.get(`http://localhost:4000/account/${id}`);
+				} catch (e) {
+					await axios.post(`http://localhost:4000/account/${id}`);
+				}
+			}		
+		}
+		fetchData();
+	}, []);
+
 	return (
 		<div>
             <h1>Home</h1>

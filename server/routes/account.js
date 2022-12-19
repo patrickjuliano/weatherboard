@@ -83,7 +83,7 @@ router.get('/pfpicon/:id', async (req, res) => {
         const data = await accountData.getPfpIcon(req.params.id);
         return res.status(200).json(data);
     } catch (e) {
-        return res.status(404).json({error: e});
+        return res.status(200).json();
     }
 });
 
@@ -97,7 +97,7 @@ router.get('/pfpmain/:id', async (req, res) => {
         const data = await accountData.getPfpMain(req.params.id);
         return res.status(200).json(data);
     } catch (e) {
-        return res.status(404).json({error: e});
+        return res.status(200).json();
     }
 });
 

@@ -187,7 +187,7 @@ function App() {
             <Toolbar />
             <div className='App-body'>
               <Routes>
-                <Route path='/' element={<Home currentUserID={currentUserID} />} />
+                <Route path='/' element={<Home currentUserID={currentUserID} isLoggedIn={isLoggedIn} />} />
 
                 <Route path='/weather/current' element={!currentUserID ? <Navigate replace to='/login' /> : <WeatherForecast currentUserID={currentUserID} />} />
                 <Route path='/weather/future' element={!currentUserID ? <Navigate replace to='/login' /> : <WeatherPredictionService currentUserID={currentUserID} />} />

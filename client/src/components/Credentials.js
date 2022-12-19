@@ -8,6 +8,7 @@ import { Visibility, VisibilityOff, DeleteForever, LockReset, Cancel } from '@mu
 
 import { getAuth, updatePassword, deleteUser } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import xss from 'xss';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -92,9 +93,9 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail, currentUs
 
 	const handlePasswordChange = async () => {
 		try {
-			let cleanPassword = checkString(data.password);
+			let cleanPassword = checkString(xss(data.password));
 			setData({...data, password: cleanPassword});
-			let cleanConfirmPassword = checkString(data.confirmPassword);
+			let cleanConfirmPassword = checkString(xss(data.confirmPassword));
 			setData({...data, confirmPassword: cleanConfirmPassword});
             try {
                 checkMatchingStrings(data.password, data.confirmPassword);
@@ -261,7 +262,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail, currentUs
 				<FormControl variant='outlined' id='loginSignupPasswordContainer'>
 					<InputLabel htmlFor='newPassword'>New Password</InputLabel>
 					<OutlinedInput 
-						aria-label = 'New Password'
+						label = 'New Password'
 						id='newPassword'
 						type={data.showPassword ? 'text' : 'password'}
 						value={data.password}
@@ -283,7 +284,7 @@ export default function Credentials({ setIsLoggedIn, currentUserEmail, currentUs
 				<FormControl variant='outlined' id='signupConfirmPasswordContainer'>
 					<InputLabel htmlFor='newConfirmPassword'>Confirm New Password</InputLabel>
 					<OutlinedInput 
-						aria-label = 'Confirm New Password'
+						label = 'Confirm New Password'
 						id='newConfirmPassword' 
 						type={data.showConfirmPassword ? 'text' : 'password'}
 						value={data.confirmPassword}

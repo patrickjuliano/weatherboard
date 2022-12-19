@@ -133,18 +133,25 @@ async function formatAndSetImage(file, userId) {
     let width = 0;
     let height = 0;
     let cropSize = 0;
-    let path = process.cwd() + '/imgTemp/';
 
-    await fs.writeFile(path+file.name, file.data, (err) => {
+    //If imgTemp folder doesn't exist it will create one, only used because git doesn't allow empty directories
+    try {
+        await fs.stat(process.cwd() + '/imgTemp');
+    } catch (e){
+        await fs.mkdir(process.cwd() + '/imgTemp', { recursive: true });
+    }
+
+    let path = process.cwd() + '/imgTemp/';
+    await fs.writeFile(path+ userId + file.name, file.data, (err) => {
         if (err) throw err;
     });
 
-    im.identify(path + file.name, function(err, features){
+    im.identify(path + userId + file.name, function(err, features){
         if (err) throw err;
         if (features.width === 0 || features.height === 0) throw 'Image incompatible';
         width = features.width;
         height = features.height;
-        im.convert([path + file.name, path + userId + 'temp.png'], function(err, stdout){
+        im.convert([path + userId + file.name, path + userId + 'temp.png'], function(err, stdout){
             if (err) throw err;
             if (width < height){
                 cropSize = width;
@@ -167,8 +174,10 @@ async function formatAndSetImage(file, userId) {
                     if (err) throw err;
                     try {
                         let icon = await fs.readFile(path + userId + 'pfpIcon.png');
-                        const updateInfo1 = await userCollection.updateOne({ _id: userId }, { $unset: { pfpIcon: "" } });
-                        if (!updateInfo1.matchedCount && !updateInfo1.modifiedCount) throw 'Could not add profile picture (icon)';
+                        if (await userCollection.countDocuments({ _id: userId }, { pfpIcon: { $exists: true } }) > 0){
+                            const updateInfo1 = await userCollection.updateOne({ _id: userId }, { $unset: { pfpIcon: "" } });
+                            if (!updateInfo1.matchedCount && !updateInfo1.modifiedCount) throw 'Could not add profile picture (icon)';
+                        }
                         const updateInfo2 = await userCollection.updateOne({ _id: userId }, { $addToSet: { pfpIcon: icon } });
                         if (!updateInfo2.matchedCount && !updateInfo2.modifiedCount) throw 'Could not add profile picture (icon)';
                     } catch (e){
@@ -184,12 +193,17 @@ async function formatAndSetImage(file, userId) {
                     if (err) throw err;
                     try {
                         let main = await fs.readFile(path + userId + 'pfpMain.png');
-                        const updateInfo1 = await userCollection.updateOne({ _id: userId }, { $unset: { pfpMain: "" } });
-                        if (!updateInfo1.matchedCount && !updateInfo1.modifiedCount) throw 'Could not add profile picture (main)';
+                        if (await userCollection.countDocuments({ _id: userId }, { pfpMain: { $exists: true } }) > 0){
+                            const updateInfo1 = await userCollection.updateOne({ _id: userId }, { $unset: { pfpMain: "" } });
+                            if (!updateInfo1.matchedCount && !updateInfo1.modifiedCount) throw 'Could not add profile picture (main)';
+                        }
                         const updateInfo2 = await userCollection.updateOne({ _id: userId }, { $addToSet: { pfpMain: main } });
                         if (!updateInfo2.matchedCount && !updateInfo2.modifiedCount) throw 'Could not add profile picture (main)';
+                        //Deletes user specific files
                         for (const file of await fs.readdir(path)) {
-                            await fs.unlink(p.join(path, file));
+                            if (file.substring(0, userId.length) === userId){
+                                await fs.unlink(p.join(path, file));
+                            }
                         }
                     } catch (e){
                         throw e;

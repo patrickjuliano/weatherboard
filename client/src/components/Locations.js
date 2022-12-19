@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import '../App.css';
 import axios from 'axios';
 import { checkNumber, checkString } from '../validation';
+import xss from 'xss';
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 
 const Locations = ({ currentUserID }) => {
@@ -145,7 +146,7 @@ const Locations = ({ currentUserID }) => {
 			const nameField = document.getElementById('nameField');
 			nameField.value = nameField.value.trim();
 			try {
-				const name = checkString(nameField.value);
+				const name = checkString(xss(nameField.value));
 				setName(name);
 			} catch (e) {
 				setLocationData(null);

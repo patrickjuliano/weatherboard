@@ -6,6 +6,7 @@ import { Visibility, VisibilityOff, Login, PersonAdd, Google } from '@mui/icons-
 
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { useNavigate, Link } from 'react-router-dom';
+import xss from 'xss';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -30,9 +31,9 @@ export default function LogIn({ setIsLoggedIn, setCurrentUserEmail, setCurrentUs
 	//Issue when not nested, sorry about readability :(
 	const handleLogin = async () => {
 		try {
-			let cleanEmail = checkString(data.email);
+			let cleanEmail = checkString(xss(data.email));
 			setData({...data, email: cleanEmail});
-			let cleanPassword = checkString(data.password);
+			let cleanPassword = checkString(xss(data.password));
 			setData({...data, password: cleanPassword});
 			try {
 				checkEmail(data.email);
