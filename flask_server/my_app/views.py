@@ -9,7 +9,7 @@ city_map = {
     'Austin': 'austin',
     'Miami': 'miami',
     'New York': 'newyork',
-    'San Francisco': 'sanfran',
+    'San Francisco': 'sanfran2',
     'Washington': 'washington'
 }
 
