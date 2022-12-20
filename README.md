@@ -11,7 +11,7 @@ Install the Imagemagick distribution to your pc (neccessary for our backend imag
 
 Put in your API key.
 
-- Register for your own OpenWeatherMap API key [here](https://openweathermap.org/api)
+- Register for your own OpenWeatherMap One Call API key [here](https://openweathermap.org/api)
 - Put the API key in the API_KEY variable [here](./server/.env)
 
 ### How to start the flask server
