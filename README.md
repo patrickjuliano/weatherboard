@@ -26,6 +26,11 @@ steps to run:
 4. run `pip install --upgrade plotly`
 5. to start the server first make the ./run.sh file executable by running `chmod +x run.sh` in terminal (mac) and then run `./run.sh` to start the server, server is on: http://127.0.0.1:8000/ . Alternatively you can run `gunicorn my_app.wsgi:app` to start the server.
 
+* on windows:
+install waitress: ```python -m pipenv install waitress```
+
+instead of pipenv install/shell use: ```python -m pipenv install``` and then ```python -m pipenv shell``` and then run ```waitress-serve --listen=*.8000 my_app.wsgi:app and then the server will be at 127.0.0.1:8000/<city>/<periods>
+
 To run jupyter notebooks (to see model nb):
 
 - Not necessary to run application, but model would be trained on monthly basis through these notebooks
