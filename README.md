@@ -7,6 +7,7 @@ Weatherboard is a web application that queries the OpenWeatherMap API to supply 
 Install the Imagemagick distribution to your pc (neccessary for our backend image processing)
 
 - Follow instructions here: https://imagemagick.org/script/download.php
+- During installation, **make sure to check off "Install legacy utilities"** in the "Select Additional Tasks" page
 
 ### How to start the flask server
 
