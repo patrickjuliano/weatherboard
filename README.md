@@ -37,7 +37,7 @@ steps to run:
 - on windows:
   install waitress: `python -m pipenv install waitress`
 
-instead of pipenv install/shell use: `python -m pipenv install` and then `python -m pipenv shell` and then run ```waitress-serve --listen=\*.8000 my_app.wsgi:app and then the server will be at 127.0.0.1:8000/<city>/<periods>
+instead of pipenv install/shell use: `python -m pipenv install` and then `python -m pipenv shell` and then run ```waitress-serve --listen=\*.8000 my_app.wsgi:app``` and then the server will be at 127.0.0.1:8000/<city>/<periods>
 
 To run jupyter notebooks (to see model nb):
 
