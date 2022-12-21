@@ -4,12 +4,14 @@ Weatherboard is a web application that queries the OpenWeatherMap API to supply 
 
 ### Prerequisites
 
-Install the Imagemagick distribution to your pc (neccessary for our backend image processing)
+Install the ImageMagick distribution to your PC (neccessary for our backend image processing)
 
 - Follow instructions here: https://imagemagick.org/script/download.php
 - During installation, **make sure to check off "Install legacy utilities"** in the "Select Additional Tasks" page
 
-Put in your API key.
+Install Redis (https://redis.io/docs/getting-started/) and start a server locally
+
+Optionally, substitute in your own API key
 
 - Register for your own OpenWeatherMap One Call API key [here](https://openweathermap.org/api)
 - Put the API key in the API_KEY variable [here](./server/.env)
@@ -32,17 +34,17 @@ steps to run:
 4. run `pip install --upgrade plotly`
 5. to start the server first make the ./run.sh file executable by running `chmod +x run.sh` in terminal (mac) and then run `./run.sh` to start the server, server is on: http://127.0.0.1:8000/ . Alternatively you can run `gunicorn my_app.wsgi:app` to start the server.
 
-* on windows:
-install waitress: ```python -m pipenv install waitress```
+- on windows:
+  install waitress: `python -m pipenv install waitress`
 
-instead of pipenv install/shell use: ```python -m pipenv install``` and then ```python -m pipenv shell``` and then run ```waitress-serve --listen=*.8000 my_app.wsgi:app and then the server will be at 127.0.0.1:8000/<city>/<periods>
+instead of pipenv install/shell use: `python -m pipenv install` and then `python -m pipenv shell` and then run ```waitress-serve --listen=\*.8000 my_app.wsgi:app and then the server will be at 127.0.0.1:8000/<city>/<periods>
 
 To run jupyter notebooks (to see model nb):
 
 - Not necessary to run application, but model would be trained on monthly basis through these notebooks
 
 * prestep: install jupyter nb https://jupyter.org/install
-* cd into flask_server folder and run: jupyter notebok
+* cd into flask_server folder and run: jupyter notebook
 
 ### Weather Prediction Service
 
@@ -50,6 +52,4 @@ The weather prediction service runs off a flask server using facebook prophet ti
 
 Historical weather data from Janurary 2018 was used to train the weather prediction model as seen in the screen shot below of Austin TX weather data:
 
-
 ![Screenshot](austin_tx_data.png)
-
